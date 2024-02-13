@@ -1,8 +1,16 @@
 import styled, { css } from "styled-components";
 
-const sizes = {
+interface SizeStyles {
+  [key: string]: ReturnType<typeof css>;
+}
+
+interface ColorStyles {
+  [key: string]: ReturnType<typeof css>;
+}
+
+const sizes: SizeStyles = {
   large: css`
-    font-size: 2rem;
+    font-size: 1.6rem;
     font-weight: var(--weight-bold);
     letter-spacing: 1.25px;
     border-radius: 15px;
@@ -15,7 +23,7 @@ const sizes = {
   `,
 };
 
-const colors = {
+const colors: ColorStyles = {
   yellow: css`
     background-color: var(--color-yellow);
 
@@ -34,16 +42,24 @@ const colors = {
     background-color: var(--color-gray);
 
     &:hover {
-      background-color: var(--color-light-gray @);
+      background-color: var(--color-light-gray);
     }
   `,
 };
 
-const Button = styled.button`
-  color: var(--color-black);
+interface ButtonProps {
+  size?: keyof typeof sizes;
+  color?: keyof typeof colors;
+  $fullWidth?: boolean;
+}
 
-  ${(props) => sizes[props.size]}
-  ${(props) => colors[props.color]}
+const Button = styled.button<ButtonProps>`
+  color: var(--color-black);
+  border: none;
+
+  ${(props) => sizes[props.size || "large"]}
+  ${(props) => colors[props.color || "yellow"]}
+  width: ${(props) => (props.$fullWidth ? "100%" : "initial")};
 `;
 
 Button.defaultProps = {
