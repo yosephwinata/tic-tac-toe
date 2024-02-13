@@ -14,6 +14,7 @@ const sizes: SizeStyles = {
     font-weight: var(--weight-bold);
     letter-spacing: 1.25px;
     border-radius: 15px;
+    height: 5.6rem;
   `,
   small: css`
     font-size: 1.6rem;
