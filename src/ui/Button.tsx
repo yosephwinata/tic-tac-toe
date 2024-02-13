@@ -14,7 +14,7 @@ const sizes: SizeStyles = {
     font-weight: var(--weight-bold);
     letter-spacing: 1.25px;
     border-radius: 15px;
-    height: 5.6rem;
+    height: 4.85rem;
   `,
   small: css`
     font-size: 1.6rem;
@@ -27,6 +27,7 @@ const sizes: SizeStyles = {
 const colors: ColorStyles = {
   yellow: css`
     background-color: var(--color-yellow);
+    box-shadow: 0 0.75rem var(--color-dark-yellow);
 
     &:hover {
       background-color: var(--color-light-yellow);
@@ -34,6 +35,7 @@ const colors: ColorStyles = {
   `,
   cyan: css`
     background-color: var(--color-cyan);
+    box-shadow: 0 0.75rem var(--color-dark-cyan);
 
     &:hover {
       background-color: var(--color-light-cyan);
