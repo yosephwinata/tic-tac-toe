@@ -1,8 +1,6 @@
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyles = createGlobalStyle`
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@500;700&display=swap');
-
 /* Section 1: Global variables */
 :root{
   --color-cyan: #31C3BD;
@@ -192,6 +190,9 @@ img {
 }
 
 /* Section 3: Project-specific global styles */
+body {
+  font-family: 'Outfit', sans-serif;
+}
 `;
 
 export default GlobalStyles;
