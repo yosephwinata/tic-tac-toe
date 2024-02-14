@@ -1,5 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import MainMenu from "./pages/MainMenu";
+import InGame from "./pages/InGame";
 import GlobalStyles from "./styles/GlobalStyles";
 
 const App: React.FC = () => {
@@ -20,7 +21,8 @@ const App: React.FC = () => {
         />
       </Helmet>
       <GlobalStyles />
-      <MainMenu />
+      {/* <MainMenu /> */}
+      <InGame />
     </>
   );
 };
