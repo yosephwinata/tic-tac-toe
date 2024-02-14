@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Button from "/src/ui/Button";
 import IconX from "../svg/IconX";
 import IconO from "../svg/IconO";
+import Logo from "../ui/Logo";
 
 const StyledMainMenu = styled.div`
   min-height: 100vh;
@@ -19,25 +20,6 @@ const MainMenuContainer = styled.div`
 
   @media (min-width: ${(props) => props.theme.breakpoints.tablet}) {
     width: 46rem;
-  }
-`;
-
-const IconsContainer = styled.div`
-  display: flex;
-  gap: 0.8rem;
-  justify-content: center;
-  margin-bottom: 3.2rem;
-
-  @media (min-width: ${(props) => props.theme.breakpoints.tablet}) {
-    margin-bottom: 4rem;
-  }
-`;
-
-const IconWrapper = styled.div`
-  width: 3.2rem;
-
-  svg {
-    width: 100%;
   }
 `;
 
@@ -92,27 +74,15 @@ const MainMenu: React.FC = () => {
   return (
     <StyledMainMenu>
       <MainMenuContainer>
-        <IconsContainer>
-          <IconWrapper>
-            <IconX />
-          </IconWrapper>
-          <IconWrapper>
-            <IconO />
-          </IconWrapper>
-        </IconsContainer>
-
+        <Logo />
         <PlayerPickContainer>
           <Instruction>PICK PLAYER 1’S MARK</Instruction>
           <OptionsContainer>
             <OptionButton>
-              <IconWrapper>
-                <IconX />
-              </IconWrapper>
+              <IconX width="3.2rem" />
             </OptionButton>
             <OptionButton>
-              <IconWrapper>
-                <IconO />
-              </IconWrapper>
+              <IconO width="3.2rem" />
             </OptionButton>
           </OptionsContainer>
           <Hint>REMEMBER : X GOES FIRST</Hint>
