@@ -13,6 +13,7 @@ const StyledMainMenu = styled.div`
 
 const MainMenuContainer = styled.div`
   width: 32.7rem;
+  text-align: center;
 
   Button:first-of-type {
     margin-bottom: 2.6rem;
@@ -70,11 +71,19 @@ const Hint = styled.p`
   opacity: 50%;
 `;
 
+const StyledLogo = styled(Logo)`
+  margin-bottom: 3.2rem;
+
+  @media (min-width: ${(props) => props.theme.breakpoints.tablet}) {
+    margin-bottom: 4rem;
+  }
+`;
+
 const MainMenu: React.FC = () => {
   return (
     <StyledMainMenu>
       <MainMenuContainer>
-        <Logo />
+        <StyledLogo />
         <PlayerPickContainer>
           <Instruction>PICK PLAYER 1’S MARK</Instruction>
           <OptionsContainer>
