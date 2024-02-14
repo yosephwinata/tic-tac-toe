@@ -1,10 +1,10 @@
 import { Helmet, HelmetProvider } from "react-helmet-async";
-import MainMenu from "./pages/MainMenu.tsx";
-import GlobalStyles from "./styles/GlobalStyles.ts";
+import MainMenu from "./pages/MainMenu";
+import GlobalStyles from "./styles/GlobalStyles";
 
 const App: React.FC = () => {
   return (
-    <HelmetProvider>
+    <>
       <Helmet>
         {/* Preconnect to Google Fonts */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -21,7 +21,7 @@ const App: React.FC = () => {
       </Helmet>
       <GlobalStyles />
       <MainMenu />
-    </HelmetProvider>
+    </>
   );
 };
 

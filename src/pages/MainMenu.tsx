@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Button from "/src/ui/Button.tsx";
+import Button from "/src/ui/Button";
 import IconX from "../svg/IconX";
 import IconO from "../svg/IconO";
 
@@ -54,6 +54,7 @@ const OptionsContainer = styled.div`
   border-radius: 10px;
   padding: 0.9rem 0.8rem;
   display: flex;
+  margin-bottom: 1.7rem;
 `;
 
 const OptionButton = styled.div`
@@ -75,7 +76,7 @@ const Hint = styled.p`
   opacity: 50%;
 `;
 
-const MainMenu = () => {
+const MainMenu: React.FC = () => {
   return (
     <StyledMainMenu>
       <MainMenuContainer>
