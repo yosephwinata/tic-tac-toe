@@ -31,26 +31,26 @@ const sizes: SizeStyles = {
 
 const colors: ColorStyles = {
   yellow: css`
-    background-color: var(--color-yellow);
-    box-shadow: 0 0.75rem var(--color-dark-yellow);
+    background-color: ${(props) => props.theme.colors.yellow};
+    box-shadow: 0 0.75rem ${(props) => props.theme.colors.darkYellow};
 
     &:hover {
-      background-color: var(--color-light-yellow);
+      background-color: ${(props) => props.theme.colors.lightYellow};
     }
   `,
   cyan: css`
-    background-color: var(--color-cyan);
-    box-shadow: 0 0.75rem var(--color-dark-cyan);
+    background-color: ${(props) => props.theme.colors.cyan};
+    box-shadow: 0 0.75rem ${(props) => props.theme.colors.darkCyan};
 
     &:hover {
-      background-color: var(--color-light-cyan);
+      background-color: ${(props) => props.theme.colors.lightCyan};
     }
   `,
   gray: css`
-    background-color: var(--color-gray);
+    background-color: ${(props) => props.theme.colors.gray};
 
     &:hover {
-      background-color: var(--color-light-gray);
+      background-color: ${(props) => props.theme.colors.lightGray};
     }
   `,
 };

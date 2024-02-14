@@ -21,6 +21,7 @@ const App: React.FC = () => {
         />
       </Helmet>
       <GlobalStyles />
+
       {/* <MainMenu /> */}
       <InGame />
     </>

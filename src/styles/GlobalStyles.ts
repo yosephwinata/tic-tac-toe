@@ -3,17 +3,6 @@ import { createGlobalStyle } from "styled-components";
 const GlobalStyles = createGlobalStyle`
 /* Section 1: Global variables */
 :root{
-  --color-dark-cyan: rgba(32, 137, 132, 1);
-  --color-cyan: #31C3BD;
-  --color-light-cyan: #65E9E4;
-  --color-dark-yellow: rgba(197, 139, 30, 1);
-  --color-yellow: #F2B137;
-  --color-light-yellow: #FFC860;
-  --color-dark-navy: #1A2A33;
-  --color-semi-dark-navy: #1F3641;
-  --color-gray: #A8BFC9;
-  --color-light-gray: #D8E8ED;
-
   --weight-medium: 500;
   --weight-bold: 700;
 }
@@ -194,7 +183,7 @@ img {
 /* Section 3: Project-specific global styles */
 body {
   font-family: 'Outfit', sans-serif;
-  background-color: var(--color-dark-navy);
+  background-color: ${(props) => props.theme.colors.darkNavy};
 }
 `;
 

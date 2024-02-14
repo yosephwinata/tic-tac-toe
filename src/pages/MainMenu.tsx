@@ -25,7 +25,7 @@ const MainMenuContainer = styled.div`
 `;
 
 const PlayerPickContainer = styled.div`
-  background-color: var(--color-semi-dark-navy);
+  background-color: ${(props) => props.theme.colors.semiDarkNavy};
   border-radius: 15px;
   padding: 2.4rem 2.4rem 3rem 2.4rem;
   margin-bottom: 3.2rem;
@@ -36,7 +36,7 @@ const PlayerPickContainer = styled.div`
 `;
 
 const Instruction = styled.p`
-  color: var(--color-gray);
+  color: ${(props) => props.theme.colors.gray};
   font-weight: var(--weight-bold);
   font-size: 1.6rem;
   letter-spacing: 1px;
@@ -45,7 +45,7 @@ const Instruction = styled.p`
 `;
 
 const OptionsContainer = styled.div`
-  background-color: var(--color-dark-navy);
+  background-color: ${(props) => props.theme.colors.darkNavy};
   border-radius: 10px;
   padding: 0.9rem 0.8rem;
   display: flex;
@@ -66,7 +66,7 @@ const Hint = styled.p`
   font-size: 1.4rem;
   font-weight: var(--weight-medium);
   letter-spacing: 0.88px;
-  color: var(--color-gray);
+  color: ${(props) => props.theme.colors.gray};
   text-align: center;
   opacity: 50%;
 `;
