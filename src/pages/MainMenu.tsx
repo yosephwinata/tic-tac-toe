@@ -11,10 +11,14 @@ const StyledMainMenu = styled.div`
 `;
 
 const MainMenuContainer = styled.div`
-  margin: 0 2.4rem;
+  width: 32.7rem;
 
   Button:first-of-type {
     margin-bottom: 2.6rem;
+  }
+
+  @media (min-width: ${(props) => props.theme.breakpoints.tablet}) {
+    width: 46rem;
   }
 `;
 
@@ -23,6 +27,10 @@ const IconsContainer = styled.div`
   gap: 0.8rem;
   justify-content: center;
   margin-bottom: 3.2rem;
+
+  @media (min-width: ${(props) => props.theme.breakpoints.tablet}) {
+    margin-bottom: 4rem;
+  }
 `;
 
 const IconWrapper = styled.div`
@@ -38,6 +46,10 @@ const PlayerPickContainer = styled.div`
   border-radius: 15px;
   padding: 2.4rem 2.4rem 3rem 2.4rem;
   margin-bottom: 3.2rem;
+
+  @media (min-width: ${(props) => props.theme.breakpoints.tablet}) {
+    padding: 2.4rem 2.4rem 3rem 2.4rem;
+  }
 `;
 
 const Instruction = styled.p`
@@ -45,7 +57,7 @@ const Instruction = styled.p`
   font-weight: var(--weight-bold);
   font-size: 1.6rem;
   letter-spacing: 1px;
-  margin-bottom: 3.3rem;
+  margin-bottom: 2.4rem;
   text-align: center;
 `;
 

@@ -10,11 +10,16 @@ interface ColorStyles {
 
 const sizes: SizeStyles = {
   large: css`
+    height: 4.85rem;
     font-size: 1.6rem;
     font-weight: var(--weight-bold);
     letter-spacing: 1.25px;
     border-radius: 15px;
-    height: 4.85rem;
+
+    @media (min-width: ${(props) => props.theme.breakpoints.tablet}) {
+      height: 5.7rem;
+      font-size: 2rem;
+    }
   `,
   small: css`
     font-size: 1.6rem;

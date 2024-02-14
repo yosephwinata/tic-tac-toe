@@ -1,4 +1,4 @@
-import { Helmet, HelmetProvider } from "react-helmet-async";
+import { Helmet } from "react-helmet-async";
 import MainMenu from "./pages/MainMenu";
 import GlobalStyles from "./styles/GlobalStyles";
 
