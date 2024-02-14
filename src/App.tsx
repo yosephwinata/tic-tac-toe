@@ -1,7 +1,14 @@
 import { Helmet } from "react-helmet-async";
+import { createGlobalStyle } from "styled-components";
+import resetCSS from "./styles/resetCSS";
+import baseCSS from "./styles/baseCSS";
 import MainMenu from "./pages/MainMenu";
 import InGame from "./pages/InGame";
-import GlobalStyles from "./styles/GlobalStyles";
+
+const GlobalStyles = createGlobalStyle`
+  ${resetCSS}
+  ${baseCSS}
+`;
 
 const App: React.FC = () => {
   return (
