@@ -19,6 +19,7 @@ declare module "styled-components" {
       semiDarkNavy: string;
       gray: string;
       lightGray: string;
+      darkGray: string;
     };
     // Add other theme properties as needed
   }
