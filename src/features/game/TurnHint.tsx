@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useContext } from "react";
 import { ThemeContext } from "styled-components";
-import IconXSvg from "../svg/IconXSvg";
+import IconXSvg from "../../svg/IconXSvg";
 
 const StyledTurnHint = styled.div`
   background-color: ${(props) => props.theme.colors.semiDarkNavy};

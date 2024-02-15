@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import LogoSvg from "../svg/LogoSvg";
-import TurnHint from "../ui/TurnHint";
+import TurnHint from "../features/game/TurnHint";
 import RestartSvg from "../svg/RestartSvg";
+import XOBoard from "../features/game/XOBoard";
 
 const GameContainer = styled.div`
   margin: 2.4rem;
@@ -37,6 +38,7 @@ const InGame: React.FC = () => {
           <RestartSvg width="1.6rem" />
         </RestartButton>
       </TopBar>
+      <XOBoard />
     </GameContainer>
   );
 };
