@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Logo from "../ui/Logo";
+import Logo from "../svg/Logo";
 import TurnHint from "../ui/TurnHint";
 
 const InGame: React.FC = () => {
@@ -8,6 +8,7 @@ const InGame: React.FC = () => {
       <div>
         <Logo />
         <TurnHint />
+        <button></button>
       </div>
     </>
   );
