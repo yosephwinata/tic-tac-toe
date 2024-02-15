@@ -3,7 +3,7 @@ interface IconXProps {
   fillColor?: string;
 }
 
-const IconX: React.FC<IconXProps> = ({
+const IconXSvg: React.FC<IconXProps> = ({
   width = "6.4rem",
   fillColor = "#31C3BD",
 }) => {
@@ -25,4 +25,4 @@ const IconX: React.FC<IconXProps> = ({
   );
 };
 
-export default IconX;
+export default IconXSvg;

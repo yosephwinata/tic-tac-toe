@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import Button from "/src/ui/Button";
-import IconX from "../svg/IconX";
-import IconO from "../svg/IconO";
-import Logo from "../ui/Logo";
+import IconXSvg from "../svg/IconXSvg";
+import IconOSvg from "../svg/IconOSvg";
+import LogoSvg from "../svg/LogoSvg";
 
 const StyledMainMenu = styled.div`
   min-height: 100vh;
@@ -71,7 +71,7 @@ const Hint = styled.p`
   opacity: 50%;
 `;
 
-const StyledLogo = styled(Logo)`
+const StyledLogo = styled(LogoSvg)`
   margin-bottom: 3.2rem;
 
   @media (min-width: ${(props) => props.theme.breakpoints.tablet}) {
@@ -88,10 +88,10 @@ const MainMenu: React.FC = () => {
           <Instruction>PICK PLAYER 1’S MARK</Instruction>
           <OptionsContainer>
             <OptionButton>
-              <IconX width="3.2rem" />
+              <IconXSvg width="3.2rem" />
             </OptionButton>
             <OptionButton>
-              <IconO width="3.2rem" />
+              <IconOSvg width="3.2rem" />
             </OptionButton>
           </OptionsContainer>
           <Hint>REMEMBER : X GOES FIRST</Hint>

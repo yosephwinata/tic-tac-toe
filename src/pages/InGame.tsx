@@ -1,14 +1,17 @@
 import styled from "styled-components";
-import Logo from "../svg/Logo";
+import LogoSvg from "../svg/LogoSvg";
 import TurnHint from "../ui/TurnHint";
+import RestartSvg from "../svg/RestartSvg";
 
 const InGame: React.FC = () => {
   return (
     <>
       <div>
-        <Logo />
+        <LogoSvg />
         <TurnHint />
-        <button></button>
+        <button>
+          <RestartSvg />
+        </button>
       </div>
     </>
   );

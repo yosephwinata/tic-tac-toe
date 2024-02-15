@@ -2,7 +2,7 @@ interface IconOProps {
   width?: string;
 }
 
-const IconO: React.FC<IconOProps> = ({ width = "6.4rem" }) => {
+const IconOSvg: React.FC<IconOProps> = ({ width = "6.4rem" }) => {
   // Apply width through style to leverage CSS's ability to handle "auto" values
   const svgStyle = { width, height: "auto" };
 
@@ -20,4 +20,4 @@ const IconO: React.FC<IconOProps> = ({ width = "6.4rem" }) => {
   );
 };
 
-export default IconO;
+export default IconOSvg;

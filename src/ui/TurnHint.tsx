@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useContext } from "react";
 import { ThemeContext } from "styled-components";
-import IconX from "../svg/IconX";
+import IconXSvg from "../svg/IconXSvg";
 
 const StyledTurnHint = styled.div`
   background-color: ${(props) => props.theme.colors.semiDarkNavy};
@@ -27,7 +27,7 @@ const TurnHint: React.FC = () => {
 
   return (
     <StyledTurnHint>
-      <IconX width="1.6rem" fillColor={fillColor} />
+      <IconXSvg width="1.6rem" fillColor={fillColor} />
       <TurnText>Turn</TurnText>
     </StyledTurnHint>
   );
