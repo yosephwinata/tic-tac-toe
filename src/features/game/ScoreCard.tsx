@@ -10,6 +10,13 @@ const StyledScoreCard = styled.div`
   justify-content: center;
   align-items: center;
   gap: 0.3rem;
+
+  @media (min-width: ${(props) => props.theme.breakpoints.tablet}) {
+    width: 14rem;
+    height: 7.2rem;
+    border-radius: 15px;
+    gap: 0.5rem;
+  }
 `;
 
 const ScoreDescription = styled.p`
@@ -23,6 +30,11 @@ const ScoreNum = styled.p`
   font-weight: var(--weight-bold);
   letter-spacing: 1.25px;
   color: ${(props) => props.theme.colors.darkNavy};
+
+  @media (min-width: ${(props) => props.theme.breakpoints.tablet}) {
+    font-size: 2.4rem;
+    letter-spacing: 1.5px;
+  }
 `;
 
 const ScoreCard: React.FC = () => {

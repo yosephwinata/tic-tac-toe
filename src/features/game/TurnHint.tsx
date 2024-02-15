@@ -16,6 +16,14 @@ const StyledTurnHint = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+
+  @media (min-width: ${(props) => props.theme.breakpoints.tablet}) {
+    padding: 0 3rem;
+    height: 5.2rem;
+    border-radius: 10px;
+    box-shadow: 0 0.5rem ${(props) => props.theme.colors.veryDarkNavy};
+    gap: 1.3rem;
+  }
 `;
 
 const TurnText = styled.span`
@@ -24,11 +32,22 @@ const TurnText = styled.span`
   text-transform: uppercase;
   letter-spacing: 0.88px;
   color: ${(props) => props.theme.colors.gray};
+
+  @media (min-width: ${(props) => props.theme.breakpoints.tablet}) {
+    font-size: 1.6rem;
+    letter-spacing: 1px;
+  }
 `;
 
 const TurnHint: React.FC = () => {
   const themeContext = useContext(ThemeContext);
   const fillColor = themeContext?.colors?.gray;
+  // let width: string;
+  // if (themeContext?.breakpoints?.tablet) {
+  //   width = "2rem";
+  // } else {
+  //   width = "1.6rem";
+  // }
 
   return (
     <StyledTurnHint>

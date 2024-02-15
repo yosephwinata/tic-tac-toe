@@ -8,6 +8,11 @@ import ScoreCard from "../features/game/ScoreCard";
 const GameContainer = styled.div`
   width: 32.8rem;
   margin: 2.4rem auto;
+
+  @media (min-width: ${(props) => props.theme.breakpoints.tablet}) {
+    width: 46rem;
+    margin: 20.1rem auto;
+  }
 `;
 
 const TopBar = styled.div`
@@ -16,6 +21,10 @@ const TopBar = styled.div`
   justify-content: space-between;
   position: relative;
   margin-bottom: 6.4rem;
+
+  @media (min-width: ${(props) => props.theme.breakpoints.tablet}) {
+    margin-bottom: 2.25rem;
+  }
 `;
 
 const RestartButton = styled.button`
@@ -28,6 +37,13 @@ const RestartButton = styled.button`
   display: inline-flex;
   align-items: center;
   justify-content: center;
+
+  @media (min-width: ${(props) => props.theme.breakpoints.tablet}) {
+    width: 5.2rem;
+    height: 5.2rem;
+    border-radius: 10px;
+    box-shadow: 0 0.5rem ${(props) => props.theme.colors.darkGray};
+  }
 `;
 
 const ScoreCards = styled.div`
