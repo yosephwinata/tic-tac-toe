@@ -6,6 +6,7 @@ const StyledXOBoard = styled.div`
   grid-template-columns: repeat(3, auto);
   row-gap: 2rem;
   justify-content: space-between;
+  margin-bottom: 3rem;
 `;
 
 const XOBoard: React.FC = () => {

@@ -11,6 +11,7 @@ const baseCSS = css`
 
   body {
     font-family: "Outfit", sans-serif;
+    font-weight: var(--weight-medium);
     background-color: ${(props) => props.theme.colors.darkNavy};
   }
 `;

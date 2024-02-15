@@ -3,6 +3,7 @@ import LogoSvg from "../svg/LogoSvg";
 import TurnHint from "../features/game/TurnHint";
 import RestartSvg from "../svg/RestartSvg";
 import XOBoard from "../features/game/XOBoard";
+import ScoreCard from "../features/game/ScoreCard";
 
 const GameContainer = styled.div`
   margin: 2.4rem;
@@ -28,6 +29,11 @@ const RestartButton = styled.button`
   justify-content: center;
 `;
 
+const ScoreCards = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
 const InGame: React.FC = () => {
   return (
     <GameContainer>
@@ -39,6 +45,11 @@ const InGame: React.FC = () => {
         </RestartButton>
       </TopBar>
       <XOBoard />
+      <ScoreCards>
+        <ScoreCard />
+        <ScoreCard />
+        <ScoreCard />
+      </ScoreCards>
     </GameContainer>
   );
 };
