@@ -6,7 +6,8 @@ import XOBoard from "../features/game/XOBoard";
 import ScoreCard from "../features/game/ScoreCard";
 
 const GameContainer = styled.div`
-  margin: 2.4rem;
+  width: 32.8rem;
+  margin: 2.4rem auto;
 `;
 
 const TopBar = styled.div`
