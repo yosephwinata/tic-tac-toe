@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import IconXSvg from "/src/svg/IconXSvg";
+import useViewportSize from "/src/hooks/useViewportSize";
 
 const StyledXOSquare = styled.button`
   width: 9.6rem;
@@ -18,9 +19,14 @@ const StyledXOSquare = styled.button`
 `;
 
 const XOSquare: React.FC = () => {
+  const { isTablet, isDesktop } = useViewportSize();
+  let width = "4rem";
+  if (isTablet) width = "6.4rem";
+  if (isDesktop) width = "6.4rem";
+
   return (
     <StyledXOSquare>
-      <IconXSvg width="4rem" />
+      <IconXSvg width={width} />
     </StyledXOSquare>
   );
 };

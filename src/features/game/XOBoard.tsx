@@ -7,9 +7,6 @@ const StyledXOBoard = styled.div`
   row-gap: 2rem;
   justify-content: space-between;
   margin-bottom: 3rem;
-
-  @media (min-width: ${(props) => props.theme.breakpoints.tablet}) {
-  }
 `;
 
 const XOBoard: React.FC = () => {

@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useContext } from "react";
 import { ThemeContext } from "styled-components";
 import IconXSvg from "../../svg/IconXSvg";
+import useViewportSize from "/src/hooks/useViewportSize";
 
 const StyledTurnHint = styled.div`
   background-color: ${(props) => props.theme.colors.semiDarkNavy};
@@ -42,16 +43,15 @@ const TurnText = styled.span`
 const TurnHint: React.FC = () => {
   const themeContext = useContext(ThemeContext);
   const fillColor = themeContext?.colors?.gray;
-  // let width: string;
-  // if (themeContext?.breakpoints?.tablet) {
-  //   width = "2rem";
-  // } else {
-  //   width = "1.6rem";
-  // }
+  const { isTablet, isDesktop } = useViewportSize();
+
+  let width = "1.6rem";
+  if (isTablet) width = "2rem";
+  if (isDesktop) width = "2.2rem";
 
   return (
     <StyledTurnHint>
-      <IconXSvg width="1.6rem" fillColor={fillColor} />
+      <IconXSvg width={width} fillColor={fillColor} />
       <TurnText>Turn</TurnText>
     </StyledTurnHint>
   );

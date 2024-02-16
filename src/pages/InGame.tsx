@@ -13,6 +13,10 @@ const GameContainer = styled.div`
     width: 46rem;
     margin: 20.1rem auto;
   }
+
+  @media (min-width: ${(props) => props.theme.breakpoints.desktop}) {
+    margin: 13.9rem auto;
+  }
 `;
 
 const TopBar = styled.div`
