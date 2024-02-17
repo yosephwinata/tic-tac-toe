@@ -14,6 +14,10 @@ const StyledTwoLinesModal = styled.div`
   z-index: 40;
   text-align: center;
   padding-top: 6.1rem;
+
+  @media (min-width: ${(props) => props.theme.breakpoints.tablet}) {
+    height: 26.6rem;
+  }
 `;
 
 const Text = styled.p`
@@ -22,6 +26,12 @@ const Text = styled.p`
   letter-spacing: 1.5px;
   color: ${(props) => props.theme.colors.gray};
   margin-bottom: 2.4rem;
+
+  @media (min-width: ${(props) => props.theme.breakpoints.tablet}) {
+    font-size: 4rem;
+    letter-spacing: 2.5px;
+    margin-bottom: 3.1rem;
+  }
 `;
 
 const ButtonsContainer = styled.div`

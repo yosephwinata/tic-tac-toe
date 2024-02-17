@@ -75,7 +75,7 @@ const InGame: React.FC = () => {
       </ScoreCards>
 
       {/* <ThreeLinesModal /> */}
-      <TwoLinesModal />
+      {/* <TwoLinesModal /> */}
     </GameContainer>
   );
 };
