@@ -17,6 +17,10 @@ const MainMenuContainer = styled.div`
 
   Button:first-of-type {
     margin-bottom: 2.6rem;
+
+    @media (min-width: ${(props) => props.theme.breakpoints.tablet}) {
+      margin-bottom: 3rem;
+    }
   }
 
   @media (min-width: ${(props) => props.theme.breakpoints.tablet}) {
@@ -32,6 +36,7 @@ const PlayerPickContainer = styled.div`
 
   @media (min-width: ${(props) => props.theme.breakpoints.tablet}) {
     padding: 2.4rem 2.4rem 3rem 2.4rem;
+    margin-bottom: 4rem;
   }
 `;
 
