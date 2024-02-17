@@ -1,9 +1,10 @@
-import styled from "styled-components";
+import styled, { ThemeContext } from "styled-components";
 import Button from "/src/ui/Button";
 import IconXSvg from "../svg/IconXSvg";
 import IconOSvg from "../svg/IconOSvg";
 import LogoSvg from "../svg/LogoSvg";
 import DifficultiesModal from "../features/game/DifficultiesModal";
+import { useContext, useState } from "react";
 
 const StyledMainMenu = styled.div`
   min-height: 100vh;
@@ -55,17 +56,21 @@ const OptionsContainer = styled.div`
   border-radius: 10px;
   padding: 0.9rem 0.8rem;
   display: flex;
+  align-items: center;
   margin-bottom: 1.7rem;
 `;
 
-const OptionButton = styled.div`
-  background-color: red;
+const OptionButton = styled.div<{ isSelected: boolean }>`
+  border: none;
+  background-color: ${(props) =>
+    props.isSelected ? props.theme.colors.gray : "transparent"};
   width: 50%;
   height: 5.4rem;
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 `;
 
 const Hint = styled.p`
@@ -86,19 +91,48 @@ const StyledLogo = styled(LogoSvg)`
 `;
 
 const MainMenu: React.FC = () => {
+  const themeContext = useContext(ThemeContext);
+  const gray = themeContext?.colors?.gray;
+  const darkNavy = themeContext?.colors?.darkNavy;
+
+  enum PlayerSymbol {
+    X = "X",
+    O = "O",
+  }
+
+  const [selectedSymbols, setSelectedSymbols] = useState<PlayerSymbol>(
+    PlayerSymbol.X
+  );
+
+  const handleSymbolClick = (newSymbol: PlayerSymbol): void => {
+    setSelectedSymbols(newSymbol);
+  };
+
   return (
     <StyledMainMenu>
-      <DifficultiesModal />
+      {/* <DifficultiesModal /> */}
       <MainMenuContainer>
         <StyledLogo />
         <PlayerPickContainer>
           <Instruction>PICK PLAYER 1’S MARK</Instruction>
           <OptionsContainer>
-            <OptionButton>
-              <IconXSvg width="3.2rem" />
+            <OptionButton
+              isSelected={selectedSymbols === PlayerSymbol.X}
+              onClick={() => handleSymbolClick(PlayerSymbol.X)}
+            >
+              <IconXSvg
+                width="3.2rem"
+                fillColor={selectedSymbols === PlayerSymbol.X ? darkNavy : gray}
+              />
             </OptionButton>
-            <OptionButton>
-              <IconOSvg width="3.2rem" />
+            <OptionButton
+              isSelected={selectedSymbols === PlayerSymbol.O}
+              onClick={() => handleSymbolClick(PlayerSymbol.O)}
+            >
+              <IconOSvg
+                width="3.2rem"
+                fillColor={selectedSymbols === PlayerSymbol.O ? darkNavy : gray}
+              />
             </OptionButton>
           </OptionsContainer>
           <Hint>REMEMBER : X GOES FIRST</Hint>
