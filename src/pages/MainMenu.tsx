@@ -3,6 +3,7 @@ import Button from "/src/ui/Button";
 import IconXSvg from "../svg/IconXSvg";
 import IconOSvg from "../svg/IconOSvg";
 import LogoSvg from "../svg/LogoSvg";
+import DifficultiesModal from "../features/game/DifficultiesModal";
 
 const StyledMainMenu = styled.div`
   min-height: 100vh;
@@ -87,6 +88,7 @@ const StyledLogo = styled(LogoSvg)`
 const MainMenu: React.FC = () => {
   return (
     <StyledMainMenu>
+      <DifficultiesModal />
       <MainMenuContainer>
         <StyledLogo />
         <PlayerPickContainer>
@@ -103,7 +105,7 @@ const MainMenu: React.FC = () => {
         </PlayerPickContainer>
 
         <Button color="yellow" size="large" $fullWidth={true}>
-          NEW GAME (VS CPU)
+          NEW GAME (VS AI)
         </Button>
         <Button color="cyan" size="large" $fullWidth={true}>
           NEW GAME (VS PLAYER)
