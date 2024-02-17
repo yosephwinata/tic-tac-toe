@@ -4,6 +4,8 @@ import TurnHint from "../features/game/TurnHint";
 import RestartSvg from "../svg/RestartSvg";
 import XOBoard from "../features/game/XOBoard";
 import ScoreCard from "../features/game/ScoreCard";
+import ThreeLinesModal from "../features/game/ThreeLinesModal";
+import TwoLinesModal from "../features/game/TwoLinesModal";
 
 const GameContainer = styled.div`
   width: 32.8rem;
@@ -71,6 +73,9 @@ const InGame: React.FC = () => {
         <ScoreCard />
         <ScoreCard />
       </ScoreCards>
+
+      {/* <ThreeLinesModal /> */}
+      <TwoLinesModal />
     </GameContainer>
   );
 };

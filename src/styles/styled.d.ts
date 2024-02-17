@@ -20,6 +20,7 @@ declare module "styled-components" {
       gray: string;
       lightGray: string;
       darkGray: string;
+      black: string;
     };
     // Add other theme properties as needed
   }

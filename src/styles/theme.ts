@@ -21,6 +21,7 @@ const theme: DefaultTheme = {
     gray: "#A8BFC9",
     lightGray: "#D8E8ED",
     darkGray: "#76838B",
+    black: "#000",
   },
   // Define other theme properties below as needed
 };

@@ -22,10 +22,12 @@ const sizes: SizeStyles = {
     }
   `,
   small: css`
+    height: 5.2rem;
     font-size: 1.6rem;
     font-weight: var(--weight-bold);
     letter-spacing: 1px;
     border-radius: 10px;
+    padding: 0 1.6rem;
   `,
 };
 
@@ -48,6 +50,7 @@ const colors: ColorStyles = {
   `,
   gray: css`
     background-color: ${(props) => props.theme.colors.gray};
+    box-shadow: 0 0.75rem ${(props) => props.theme.colors.darkGray};
 
     &:hover {
       background-color: ${(props) => props.theme.colors.lightGray};
