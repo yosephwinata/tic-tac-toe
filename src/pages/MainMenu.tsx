@@ -4,8 +4,7 @@ import Button from "/src/ui/Button";
 import IconXSvg from "../svg/IconXSvg";
 import IconOSvg from "../svg/IconOSvg";
 import LogoSvg from "../svg/LogoSvg";
-import DifficultiesModal from "../features/game/DifficultiesModal";
-import { PlayerSymbol } from "../utils/enums/PlayerSymbol";
+import { PlayerSymbol } from "../utils/types/types";
 
 const StyledMainMenu = styled.div`
   min-height: 100vh;
@@ -102,9 +101,7 @@ const MainMenu: React.FC<MainMenuProps> = ({ onNewGameVsPlayerClick }) => {
   const gray = themeContext?.colors?.gray;
   const darkNavy = themeContext?.colors?.darkNavy;
 
-  const [selectedSymbols, setSelectedSymbols] = useState<PlayerSymbol>(
-    PlayerSymbol.X
-  );
+  const [selectedSymbols, setSelectedSymbols] = useState<PlayerSymbol>("X");
 
   const handleSymbolClick = (newSymbol: PlayerSymbol): void => {
     setSelectedSymbols(newSymbol);
@@ -119,25 +116,25 @@ const MainMenu: React.FC<MainMenuProps> = ({ onNewGameVsPlayerClick }) => {
           <Instruction>PICK PLAYER 1’S MARK</Instruction>
           <OptionsContainer>
             <OptionButton
-              $isSelected={selectedSymbols === PlayerSymbol.X}
-              onClick={() => handleSymbolClick(PlayerSymbol.X)}
-              aria-checked={selectedSymbols === PlayerSymbol.X}
+              $isSelected={selectedSymbols === "X"}
+              onClick={() => handleSymbolClick("X")}
+              aria-checked={selectedSymbols === "X"}
               role="radio"
             >
               <IconXSvg
                 width="3.2rem"
-                fillColor={selectedSymbols === PlayerSymbol.X ? darkNavy : gray}
+                fillColor={selectedSymbols === "X" ? darkNavy : gray}
               />
             </OptionButton>
             <OptionButton
-              $isSelected={selectedSymbols === PlayerSymbol.O}
-              onClick={() => handleSymbolClick(PlayerSymbol.O)}
-              aria-checked={selectedSymbols === PlayerSymbol.O}
+              $isSelected={selectedSymbols === "O"}
+              onClick={() => handleSymbolClick("O")}
+              aria-checked={selectedSymbols === "O"}
               role="radio"
             >
               <IconOSvg
                 width="3.2rem"
-                fillColor={selectedSymbols === PlayerSymbol.O ? darkNavy : gray}
+                fillColor={selectedSymbols === "O" ? darkNavy : gray}
               />
             </OptionButton>
           </OptionsContainer>

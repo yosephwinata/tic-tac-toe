@@ -5,8 +5,8 @@ import resetCSS from "./styles/resetCSS";
 import baseCSS from "./styles/baseCSS";
 import MainMenu from "./pages/MainMenu";
 import InGame from "./pages/InGame";
-import { PlayerSymbol } from "./utils/enums/PlayerSymbol";
-import { CurrentPage } from "./utils/enums/CurrentPage";
+import { CurrentPage } from "./utils/types/types";
+import { PlayerSymbol } from "./utils/types/types";
 
 const GlobalStyles = createGlobalStyle`
   ${resetCSS}
@@ -14,24 +14,20 @@ const GlobalStyles = createGlobalStyle`
 `;
 
 const App: React.FC = () => {
-  const [player1Symbol, setPlayer1Symbol] = useState<PlayerSymbol | undefined>(
-    undefined
-  );
-  const [currentPage, setCurrentPage] = useState<CurrentPage>(
-    CurrentPage.mainMenu
-  );
+  const [player1Symbol, setPlayer1Symbol] = useState<PlayerSymbol>("X");
+  const [currentPage, setCurrentPage] = useState<CurrentPage>("mainMenu");
 
   const handleNewGameVsPlayer = (selectedSymbol: PlayerSymbol) => {
     setPlayer1Symbol(selectedSymbol);
-    setCurrentPage(CurrentPage.inGame);
+    setCurrentPage("inGame");
   };
 
   let currentPageComponent;
-  if (currentPage === CurrentPage.mainMenu) {
+  if (currentPage === "mainMenu") {
     currentPageComponent = (
       <MainMenu onNewGameVsPlayerClick={handleNewGameVsPlayer} />
     );
-  } else if (currentPage === CurrentPage.inGame) {
+  } else if (currentPage === "inGame") {
     currentPageComponent = <InGame player1Symbol={player1Symbol} />;
   }
 
