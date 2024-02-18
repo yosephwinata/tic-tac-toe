@@ -17,14 +17,6 @@ const MainMenuContainer = styled.div`
   width: 32.7rem;
   text-align: center;
 
-  Button:first-of-type {
-    margin-bottom: 2.6rem;
-
-    @media (min-width: ${(props) => props.theme.breakpoints.tablet}) {
-      margin-bottom: 3rem;
-    }
-  }
-
   @media (min-width: ${(props) => props.theme.breakpoints.tablet}) {
     width: 46rem;
   }
@@ -60,10 +52,10 @@ const OptionsContainer = styled.div`
   margin-bottom: 1.7rem;
 `;
 
-const OptionButton = styled.div<{ isSelected: boolean }>`
+const OptionButton = styled.button<{ $isSelected: boolean }>`
   border: none;
   background-color: ${(props) =>
-    props.isSelected ? props.theme.colors.gray : "transparent"};
+    props.$isSelected ? props.theme.colors.gray : "transparent"};
   width: 50%;
   height: 5.4rem;
   border-radius: 10px;
@@ -87,6 +79,16 @@ const StyledLogo = styled(LogoSvg)`
 
   @media (min-width: ${(props) => props.theme.breakpoints.tablet}) {
     margin-bottom: 4rem;
+  }
+`;
+
+const StartButtons = styled.div`
+  Button:first-of-type {
+    margin-bottom: 2.6rem;
+
+    @media (min-width: ${(props) => props.theme.breakpoints.tablet}) {
+      margin-bottom: 3rem;
+    }
   }
 `;
 
@@ -117,8 +119,10 @@ const MainMenu: React.FC = () => {
           <Instruction>PICK PLAYER 1’S MARK</Instruction>
           <OptionsContainer>
             <OptionButton
-              isSelected={selectedSymbols === PlayerSymbol.X}
+              $isSelected={selectedSymbols === PlayerSymbol.X}
               onClick={() => handleSymbolClick(PlayerSymbol.X)}
+              aria-checked={selectedSymbols === PlayerSymbol.X}
+              role="radio"
             >
               <IconXSvg
                 width="3.2rem"
@@ -126,8 +130,10 @@ const MainMenu: React.FC = () => {
               />
             </OptionButton>
             <OptionButton
-              isSelected={selectedSymbols === PlayerSymbol.O}
+              $isSelected={selectedSymbols === PlayerSymbol.O}
               onClick={() => handleSymbolClick(PlayerSymbol.O)}
+              aria-checked={selectedSymbols === PlayerSymbol.O}
+              role="radio"
             >
               <IconOSvg
                 width="3.2rem"
@@ -138,12 +144,14 @@ const MainMenu: React.FC = () => {
           <Hint>REMEMBER : X GOES FIRST</Hint>
         </PlayerPickContainer>
 
-        <Button color="yellow" size="large" $fullWidth={true}>
-          NEW GAME (VS AI)
-        </Button>
-        <Button color="cyan" size="large" $fullWidth={true}>
-          NEW GAME (VS PLAYER)
-        </Button>
+        <StartButtons>
+          <Button color="yellow" size="large" $fullWidth={true}>
+            NEW GAME (VS AI)
+          </Button>
+          <Button color="cyan" size="large" $fullWidth={true}>
+            NEW GAME (VS PLAYER)
+          </Button>
+        </StartButtons>
       </MainMenuContainer>
     </StyledMainMenu>
   );
