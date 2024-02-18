@@ -1,15 +1,21 @@
 import { useState, useEffect } from "react";
 import { breakpoints } from "../utils/constants/breakpoints";
 
-const useViewportSize = () => {
-  const [viewportSize, setViewportSize] = useState({
+interface ViewportSize {
+  isMobile: boolean;
+  isTablet: boolean;
+  isDesktop: boolean;
+}
+
+const useViewportSize = (): ViewportSize => {
+  const [viewportSize, setViewportSize] = useState<ViewportSize>({
     isMobile: false,
     isTablet: false,
     isDesktop: false,
   });
 
   useEffect(() => {
-    const handleResize = () => {
+    const handleResize = (): void => {
       const width = window.innerWidth;
       setViewportSize({
         isMobile: width < breakpoints.tablet,
