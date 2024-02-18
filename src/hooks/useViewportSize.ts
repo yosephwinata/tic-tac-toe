@@ -1,10 +1,5 @@
 import { useState, useEffect } from "react";
-
-// These values must match the breakpoints defined in theme.ts
-const breakpoints = {
-  tablet: 768, // 768px = 48em
-  desktop: 1024, // 1024px = 64em
-};
+import { breakpoints } from "../utils/constants/breakpoints";
 
 const useViewportSize = () => {
   const [viewportSize, setViewportSize] = useState({

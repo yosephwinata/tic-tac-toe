@@ -1,12 +1,12 @@
 import { DefaultTheme } from "styled-components";
+import { breakpoints } from "../utils/constants/breakpoints";
 
 // Important: Remember to update the styled.d.ts file whenever you update the code below.
 // It is required to maximize typescript potentials
 const theme: DefaultTheme = {
-  // Don't forget to update the breakpoints in the useViewportSize hook if you change them here
   breakpoints: {
-    tablet: "48em", // 768px
-    desktop: "64em", // 1024px
+    tablet: `${breakpoints.tablet / 16}em`,
+    desktop: `${breakpoints.desktop / 16}em`,
   },
   colors: {
     darkCyan: "rgba(32, 137, 132, 1)",
