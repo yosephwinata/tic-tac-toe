@@ -1,9 +1,12 @@
+import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { createGlobalStyle } from "styled-components";
 import resetCSS from "./styles/resetCSS";
 import baseCSS from "./styles/baseCSS";
 import MainMenu from "./pages/MainMenu";
 import InGame from "./pages/InGame";
+import { PlayerSymbol } from "./utils/enums/PlayerSymbol";
+import { CurrentPage } from "./utils/enums/CurrentPage";
 
 const GlobalStyles = createGlobalStyle`
   ${resetCSS}
@@ -11,6 +14,27 @@ const GlobalStyles = createGlobalStyle`
 `;
 
 const App: React.FC = () => {
+  const [player1Symbol, setPlayer1Symbol] = useState<PlayerSymbol | undefined>(
+    undefined
+  );
+  const [currentPage, setCurrentPage] = useState<CurrentPage>(
+    CurrentPage.mainMenu
+  );
+
+  const handleNewGameVsPlayer = (selectedSymbol: PlayerSymbol) => {
+    setPlayer1Symbol(selectedSymbol);
+    setCurrentPage(CurrentPage.inGame);
+  };
+
+  let currentPageComponent;
+  if (currentPage === CurrentPage.mainMenu) {
+    currentPageComponent = (
+      <MainMenu onNewGameVsPlayerClick={handleNewGameVsPlayer} />
+    );
+  } else if (currentPage === CurrentPage.inGame) {
+    currentPageComponent = <InGame player1Symbol={player1Symbol} />;
+  }
+
   return (
     <>
       <Helmet>
@@ -28,9 +52,7 @@ const App: React.FC = () => {
         />
       </Helmet>
       <GlobalStyles />
-
-      <MainMenu />
-      {/* <InGame /> */}
+      {currentPageComponent}
     </>
   );
 };

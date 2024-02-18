@@ -1,10 +1,11 @@
+import { useContext, useState } from "react";
 import styled, { ThemeContext } from "styled-components";
 import Button from "/src/ui/Button";
 import IconXSvg from "../svg/IconXSvg";
 import IconOSvg from "../svg/IconOSvg";
 import LogoSvg from "../svg/LogoSvg";
 import DifficultiesModal from "../features/game/DifficultiesModal";
-import { useContext, useState } from "react";
+import { PlayerSymbol } from "../utils/enums/PlayerSymbol";
 
 const StyledMainMenu = styled.div`
   min-height: 100vh;
@@ -92,15 +93,14 @@ const StartButtons = styled.div`
   }
 `;
 
-const MainMenu: React.FC = () => {
+interface MainMenuProps {
+  onNewGameVsPlayerClick: (selectedSymbol: PlayerSymbol) => void;
+}
+
+const MainMenu: React.FC<MainMenuProps> = ({ onNewGameVsPlayerClick }) => {
   const themeContext = useContext(ThemeContext);
   const gray = themeContext?.colors?.gray;
   const darkNavy = themeContext?.colors?.darkNavy;
-
-  enum PlayerSymbol {
-    X = "X",
-    O = "O",
-  }
 
   const [selectedSymbols, setSelectedSymbols] = useState<PlayerSymbol>(
     PlayerSymbol.X
@@ -148,7 +148,12 @@ const MainMenu: React.FC = () => {
           <Button color="yellow" size="large" $fullWidth={true}>
             NEW GAME (VS AI)
           </Button>
-          <Button color="cyan" size="large" $fullWidth={true}>
+          <Button
+            onClick={() => onNewGameVsPlayerClick(selectedSymbols)}
+            color="cyan"
+            size="large"
+            $fullWidth={true}
+          >
             NEW GAME (VS PLAYER)
           </Button>
         </StartButtons>

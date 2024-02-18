@@ -6,6 +6,7 @@ import XOBoard from "../features/game/XOBoard";
 import ScoreCard from "../features/game/ScoreCard";
 import ThreeLinesModal from "../features/game/ThreeLinesModal";
 import TwoLinesModal from "../features/game/TwoLinesModal";
+import { PlayerSymbol } from "../utils/enums/PlayerSymbol";
 
 const GameContainer = styled.div`
   width: 32.8rem;
@@ -57,7 +58,11 @@ const ScoreCards = styled.div`
   justify-content: space-between;
 `;
 
-const InGame: React.FC = () => {
+interface InGameProps {
+  player1Symbol: PlayerSymbol;
+}
+
+const InGame: React.FC<InGameProps> = ({ player1Symbol }) => {
   return (
     <GameContainer>
       <TopBar>
