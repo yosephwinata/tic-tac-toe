@@ -68,6 +68,10 @@ const Button = styled.button<ButtonProps>`
   color: var(--color-black);
   border: none;
 
+  &:active {
+    transform: translateY(0.24rem);
+  }
+
   ${(props) => sizes[props.size || "large"]}
   ${(props) => colors[props.color || "yellow"]}
   width: ${(props) => (props.$fullWidth ? "100%" : "initial")};
