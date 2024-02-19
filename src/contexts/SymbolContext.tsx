@@ -1,4 +1,4 @@
-// ARCHIVED
+// ARCHIVED: Just for future references
 
 import { createContext, useContext, useState, ReactNode } from "react";
 

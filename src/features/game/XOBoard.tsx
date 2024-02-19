@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import XOSquare from "./XOSquare";
+import XOCell from "./XOCell";
+import { Cell } from "/src/utils/types/types";
 
 const StyledXOBoard = styled.div`
   display: grid;
@@ -9,18 +10,26 @@ const StyledXOBoard = styled.div`
   margin-bottom: 3rem;
 `;
 
-const XOBoard: React.FC = () => {
+interface XOBoardProps {
+  boardState: Cell[][];
+  onCellClick: (rowIndex: number, colIndex: number) => void;
+}
+
+const XOBoard: React.FC<XOBoardProps> = ({ boardState, onCellClick }) => {
   return (
     <StyledXOBoard>
-      <XOSquare />
-      <XOSquare />
-      <XOSquare />
-      <XOSquare />
-      <XOSquare />
-      <XOSquare />
-      <XOSquare />
-      <XOSquare />
-      <XOSquare />
+      {boardState.map((row, rowIndex) =>
+        row.map((value, colIndex) => (
+          <div key={`${rowIndex}-${colIndex}`}>
+            <XOCell
+              value={value}
+              rowIndex={rowIndex}
+              colIndex={colIndex}
+              onCellClick={onCellClick}
+            />
+          </div>
+        ))
+      )}
     </StyledXOBoard>
   );
 };

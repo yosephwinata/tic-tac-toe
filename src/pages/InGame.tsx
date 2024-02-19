@@ -6,7 +6,8 @@ import XOBoard from "../features/game/XOBoard";
 import ScoreCard from "../features/game/ScoreCard";
 import ThreeLinesModal from "../features/game/ThreeLinesModal";
 import TwoLinesModal from "../features/game/TwoLinesModal";
-import { PlayerSymbol } from "../utils/enums/PlayerSymbol";
+import { Cell, PlayerSymbol } from "../utils/types/types";
+import { useReducer } from "react";
 
 const GameContainer = styled.div`
   width: 32.8rem;
@@ -58,11 +59,88 @@ const ScoreCards = styled.div`
   justify-content: space-between;
 `;
 
+type StateType = {
+  status: "playing" | "won" | "lost" | "tied" | "restart";
+  currentPlayer: PlayerSymbol;
+  boardState: Cell[][];
+  player1Score: number;
+  player2Score: number;
+  tiesScore: number;
+};
+
+const initialState: StateType = {
+  status: "playing",
+  currentPlayer: "X",
+  boardState: [
+    [null, null, null],
+    [null, null, null],
+    [null, null, null],
+  ],
+  player1Score: 0,
+  player2Score: 0,
+  tiesScore: 0,
+};
+
+interface UpdateCellPayload {
+  rowIndex: number;
+  colIndex: number;
+  currentPlayer: PlayerSymbol;
+}
+
+type ActionType =
+  | { type: "SWITCH_TURN" }
+  | { type: "UPDATE_BOARD"; payload: UpdateCellPayload }
+  | { type: "INCREMENT_PLAYER1_SCORE" }
+  | { type: "INCREMENT_PLAYER2_SCORE" }
+  | { type: "INCREMENT_TIES_SCORE" };
+
+const reducer = (state: StateType, action: ActionType): StateType => {
+  switch (action.type) {
+    case "SWITCH_TURN": {
+      let nextPlayer: PlayerSymbol;
+      if (state.currentPlayer === "X") nextPlayer = "O";
+      else nextPlayer = "X";
+
+      return { ...state, currentPlayer: nextPlayer };
+    }
+    case "UPDATE_BOARD": {
+      const newBoardState = state.boardState;
+      newBoardState[action.payload.rowIndex][action.payload.colIndex] =
+        action.payload.currentPlayer;
+      return { ...state, boardState: newBoardState };
+    }
+    default:
+      throw new Error("Action unkonwn");
+  }
+};
+
 interface InGameProps {
   player1Symbol: PlayerSymbol;
 }
 
 const InGame: React.FC<InGameProps> = ({ player1Symbol }) => {
+  const [
+    {
+      status,
+      currentPlayer,
+      boardState,
+      player1Score,
+      player2Score,
+      tiesScore,
+    },
+    dispatch,
+  ] = useReducer(reducer, initialState);
+
+  const handleCellClick = (rowIndex: number, colIndex: number) => {
+    const payload = {
+      rowIndex,
+      colIndex,
+      currentPlayer,
+    };
+    dispatch({ type: "UPDATE_BOARD", payload });
+    dispatch({ type: "SWITCH_TURN" });
+  };
+
   return (
     <GameContainer>
       <TopBar>
@@ -72,7 +150,7 @@ const InGame: React.FC<InGameProps> = ({ player1Symbol }) => {
           <RestartSvg width="1.6rem" />
         </RestartButton>
       </TopBar>
-      <XOBoard />
+      <XOBoard boardState={boardState} onCellClick={handleCellClick} />
       <ScoreCards>
         <ScoreCard />
         <ScoreCard />
