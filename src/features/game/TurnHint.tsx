@@ -3,6 +3,8 @@ import { useContext } from "react";
 import { ThemeContext } from "styled-components";
 import IconXSvg from "../../svg/IconXSvg";
 import useViewportSize from "/src/hooks/useViewportSize";
+import { PlayerSymbol } from "/src/utils/types/types";
+import IconOSvg from "/src/svg/IconOSvg";
 
 const StyledTurnHint = styled.div`
   background-color: ${(props) => props.theme.colors.semiDarkNavy};
@@ -40,7 +42,11 @@ const TurnText = styled.span`
   }
 `;
 
-const TurnHint: React.FC = () => {
+interface TurnHintProps {
+  currentPlayer: PlayerSymbol;
+}
+
+const TurnHint: React.FC<TurnHintProps> = ({ currentPlayer }) => {
   const themeContext = useContext(ThemeContext);
   const fillColor = themeContext?.colors?.gray;
   const { isTablet, isDesktop } = useViewportSize();
@@ -51,7 +57,11 @@ const TurnHint: React.FC = () => {
 
   return (
     <StyledTurnHint>
-      <IconXSvg width={width} fillColor={fillColor} />
+      {currentPlayer === "X" ? (
+        <IconXSvg width={width} fillColor={fillColor} />
+      ) : (
+        <IconOSvg width={width} fillColor={fillColor} />
+      )}
       <TurnText>Turn</TurnText>
     </StyledTurnHint>
   );

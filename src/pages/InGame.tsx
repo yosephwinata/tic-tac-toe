@@ -145,7 +145,7 @@ const InGame: React.FC<InGameProps> = ({ player1Symbol }) => {
     <GameContainer>
       <TopBar>
         <LogoSvg />
-        <TurnHint />
+        <TurnHint currentPlayer={currentPlayer} />
         <RestartButton>
           <RestartSvg width="1.6rem" />
         </RestartButton>
