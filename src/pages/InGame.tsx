@@ -154,10 +154,13 @@ const InGame: React.FC<InGameProps> = ({ player1Symbol }) => {
       colIndex,
       currentPlayer
     );
+    console.log("wo00o0n", won);
     if (won) {
       dispatch({ type: "UPDATE_GAME_STATE", payload: "wonOrLost" });
     } else {
-      checkTie();
+      if (checkTie()) {
+        dispatch({ type: "UPDATE_GAME_STATE", payload: "tied" });
+      }
       dispatch({ type: "UPDATE_BOARD", payload });
       dispatch({ type: "SWITCH_TURN" });
     }
@@ -168,44 +171,54 @@ const InGame: React.FC<InGameProps> = ({ player1Symbol }) => {
     rowIndex: number,
     colIndex: number,
     currentPlayer: PlayerSymbol
-  ): boolean => {
+  ): number[][] | null => {
     // Make a copy of the boardState 2d array
     const newBoardState = boardState.map((innerArray) => [...innerArray]);
     newBoardState[rowIndex][colIndex] = currentPlayer;
 
+    const winningCombination: number[][] = [];
+
     // check row
     for (let i = 0; i < boardState.length; i++) {
+      winningCombination.push([rowIndex, i]);
       if (newBoardState[rowIndex][i] !== currentPlayer) break;
-      if (i === boardState.length - 1) return true; // Wins
+      if (i === boardState.length - 1) return winningCombination; // Wins
     }
+    winningCombination.length = 0;
 
     // check col
     for (let i = 0; i < boardState.length; i++) {
+      winningCombination.push([i, colIndex]);
       if (newBoardState[i][colIndex] !== currentPlayer) break;
-      if (i === boardState.length - 1) return true; //Wins
+      if (i === boardState.length - 1) return winningCombination; //Wins
     }
+    winningCombination.length = 0;
 
     // Check diagonal
     if (rowIndex === colIndex) {
       for (let i = 0; i < boardState.length; i++) {
+        winningCombination.push([i, i]);
         if (newBoardState[i][i] !== currentPlayer) break;
-        if (i === boardState.length - 1) return true; //Wins
+        if (i === boardState.length - 1) return winningCombination; //Wins
       }
     }
+    winningCombination.length = 0;
 
     // Check anti diagonal
     if (rowIndex + colIndex === boardState.length - 1) {
       for (let i = 0; i < boardState.length; i++) {
-        if (newBoardState[i][boardState.length - 1 - i] !== currentPlayer)
-          break;
-        if (i === boardState.length - 1) return true; //Wins
+        const currentCol = boardState.length - 1 - i;
+        winningCombination.push([i, currentCol]);
+        if (newBoardState[i][currentCol] !== currentPlayer) break;
+        if (i === boardState.length - 1) return winningCombination; //Wins
       }
     }
 
-    return false;
+    return null;
   };
 
   const checkTie = (): boolean => {
+    console.log("ttieeee");
     if (moveCount.current === Math.pow(boardState.length, 2)) {
       return true;
     }
@@ -233,7 +246,7 @@ const InGame: React.FC<InGameProps> = ({ player1Symbol }) => {
         winningPlayer={currentPlayer}
         player1={player1Symbol}
       />
-      {/* <TwoLinesModal /> */}
+      <TwoLinesModal gameState={gameState} />
     </GameContainer>
   );
 };

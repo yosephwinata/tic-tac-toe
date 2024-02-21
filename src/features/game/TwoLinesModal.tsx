@@ -2,6 +2,7 @@ import { createPortal } from "react-dom";
 import styled from "styled-components";
 import Overlay from "/src/ui/Overlay";
 import Button from "/src/ui/Button";
+import { GameState } from "/src/utils/types/types";
 
 const StyledTwoLinesModal = styled.div`
   position: fixed;
@@ -39,21 +40,32 @@ const ButtonsContainer = styled.div`
   gap: 1.6rem;
 `;
 
-const TwoLinesModal = () => {
+interface TwoLinesModalProps {
+  gameState: GameState;
+}
+
+const TwoLinesModal: React.FC<TwoLinesModalProps> = ({ gameState }) => {
   return createPortal(
     <>
-      <Overlay />
-      <StyledTwoLinesModal>
-        <Text>RESTART GAME?</Text>
-        <ButtonsContainer>
-          <Button size="small" color="gray">
-            NO, CANCEL
-          </Button>
-          <Button size="small" color="yellow">
-            YES, RESTART
-          </Button>
-        </ButtonsContainer>
-      </StyledTwoLinesModal>
+      {(gameState === "restart" || gameState === "tied") && (
+        <div>
+          <Overlay />
+          <StyledTwoLinesModal>
+            {gameState === "restart" && <Text>RESTART GAME?</Text>}
+            {gameState === "tied" && <Text>ROUND TIED</Text>}
+            <ButtonsContainer>
+              <Button size="small" color="gray">
+                {gameState === "restart" && "NO, CANCEL"}
+                {gameState === "tied" && "QUIT"}
+              </Button>
+              <Button size="small" color="yellow">
+                {gameState === "restart" && "YES, RESTART"}
+                {gameState === "tied" && "NEXT ROUND"}
+              </Button>
+            </ButtonsContainer>
+          </StyledTwoLinesModal>
+        </div>
+      )}
     </>,
     document.getElementById("modal") as Element
   );
