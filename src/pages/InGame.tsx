@@ -7,7 +7,8 @@ import ScoreCard from "../features/game/ScoreCard";
 import ThreeLinesModal from "../features/game/ThreeLinesModal";
 import TwoLinesModal from "../features/game/TwoLinesModal";
 import { Cell, PlayerSymbol } from "../utils/types/types";
-import { useReducer } from "react";
+import { useReducer, useRef } from "react";
+import { GameState } from "../utils/types/types";
 
 const GameContainer = styled.div`
   width: 32.8rem;
@@ -60,22 +61,24 @@ const ScoreCards = styled.div`
 `;
 
 type StateType = {
-  status: "playing" | "won" | "lost" | "tied" | "restart";
+  gameState: GameState;
   currentPlayer: PlayerSymbol;
   boardState: Cell[][];
+  moveCount: number;
   player1Score: number;
   player2Score: number;
   tiesScore: number;
 };
 
 const initialState: StateType = {
-  status: "playing",
+  gameState: "playing",
   currentPlayer: "X",
   boardState: [
     [null, null, null],
     [null, null, null],
     [null, null, null],
   ],
+  moveCount: 0,
   player1Score: 0,
   player2Score: 0,
   tiesScore: 0,
@@ -92,7 +95,11 @@ type ActionType =
   | { type: "UPDATE_BOARD"; payload: UpdateCellPayload }
   | { type: "INCREMENT_PLAYER1_SCORE" }
   | { type: "INCREMENT_PLAYER2_SCORE" }
-  | { type: "INCREMENT_TIES_SCORE" };
+  | { type: "INCREMENT_TIES_SCORE" }
+  | {
+      type: "UPDATE_GAME_STATE";
+      payload: GameState;
+    };
 
 const reducer = (state: StateType, action: ActionType): StateType => {
   switch (action.type) {
@@ -104,13 +111,15 @@ const reducer = (state: StateType, action: ActionType): StateType => {
       return { ...state, currentPlayer: nextPlayer };
     }
     case "UPDATE_BOARD": {
-      const newBoardState = state.boardState;
+      const newBoardState = state.boardState.map((row) => [...row]);
       newBoardState[action.payload.rowIndex][action.payload.colIndex] =
         action.payload.currentPlayer;
       return { ...state, boardState: newBoardState };
     }
+    case "UPDATE_GAME_STATE":
+      return { ...state, gameState: action.payload };
     default:
-      throw new Error("Action unkonwn");
+      throw new Error("Action unknown");
   }
 };
 
@@ -121,7 +130,7 @@ interface InGameProps {
 const InGame: React.FC<InGameProps> = ({ player1Symbol }) => {
   const [
     {
-      status,
+      gameState,
       currentPlayer,
       boardState,
       player1Score,
@@ -130,15 +139,79 @@ const InGame: React.FC<InGameProps> = ({ player1Symbol }) => {
     },
     dispatch,
   ] = useReducer(reducer, initialState);
+  const moveCount = useRef(0);
 
   const handleCellClick = (rowIndex: number, colIndex: number) => {
+    moveCount.current += 1;
     const payload = {
       rowIndex,
       colIndex,
       currentPlayer,
     };
-    dispatch({ type: "UPDATE_BOARD", payload });
-    dispatch({ type: "SWITCH_TURN" });
+    const won = checkWinCondition(
+      boardState,
+      rowIndex,
+      colIndex,
+      currentPlayer
+    );
+    console.log("checkWinCondition", won);
+    if (won) {
+      dispatch({ type: "UPDATE_GAME_STATE", payload: "wonOrLost" });
+    } else {
+      checkTie();
+      dispatch({ type: "UPDATE_BOARD", payload });
+      dispatch({ type: "SWITCH_TURN" });
+    }
+  };
+
+  const checkWinCondition = (
+    boardState: Cell[][],
+    rowIndex: number,
+    colIndex: number,
+    currentPlayer: PlayerSymbol
+  ): boolean => {
+    // Make a copy of the boardState 2d array
+    const newBoardState = boardState.map((innerArray) => [...innerArray]);
+    newBoardState[rowIndex][colIndex] = currentPlayer;
+
+    // check row
+    for (let i = 0; i < boardState.length; i++) {
+      if (newBoardState[rowIndex][i] !== currentPlayer) break;
+      if (i === boardState.length - 1) return true; // Wins
+    }
+
+    // check col
+    for (let i = 0; i < boardState.length; i++) {
+      if (newBoardState[i][colIndex] !== currentPlayer) break;
+      if (i === boardState.length - 1) return true; //Wins
+    }
+
+    // Check diagonal
+    if (rowIndex === colIndex) {
+      for (let i = 0; i < boardState.length; i++) {
+        if (newBoardState[i][i] !== currentPlayer) break;
+        if (i === boardState.length - 1) return true; //Wins
+      }
+    }
+
+    // Check anti diagonal
+    if (rowIndex + colIndex === boardState.length - 1) {
+      for (let i = 0; i < boardState.length; i++) {
+        if (newBoardState[i][boardState.length - 1 - i] !== currentPlayer)
+          break;
+        if (i === boardState.length - 1) return true; //Wins
+      }
+    }
+
+    return false;
+  };
+
+  const checkTie = (): boolean => {
+    if (moveCount.current === Math.pow(boardState.length, 2)) {
+      console.log("TIEEEEEEEDDDD");
+      return true;
+    }
+    return false;
   };
 
   return (
@@ -157,7 +230,7 @@ const InGame: React.FC<InGameProps> = ({ player1Symbol }) => {
         <ScoreCard />
       </ScoreCards>
 
-      {/* <ThreeLinesModal /> */}
+      <ThreeLinesModal gameState={gameState} player={currentPlayer} />
       {/* <TwoLinesModal /> */}
     </GameContainer>
   );

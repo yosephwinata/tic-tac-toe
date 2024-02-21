@@ -1,9 +1,13 @@
 import { createPortal } from "react-dom";
-import styled from "styled-components";
+import styled, { ThemeContext } from "styled-components";
 import Overlay from "/src/ui/Overlay";
 import IconOSvg from "/src/svg/IconOSvg";
 import Button from "/src/ui/Button";
 import useViewportSize from "/src/hooks/useViewportSize";
+import { GameState, PlayerSymbol } from "/src/utils/types/types";
+import IconXSvg from "/src/svg/IconXSvg";
+import { useContext } from "react";
+import theme from "/src/styles/theme";
 
 const StyledThreeLinesModal = styled.div`
   position: fixed;
@@ -47,10 +51,11 @@ const TextContainer = styled.div`
   }
 `;
 
-const LargeText = styled.p`
+const LargeText = styled.p<{ color?: string }>`
   font-size: 2.4rem;
   letter-spacing: 1.5px;
-  color: ${(props) => props.theme.colors.yellow};
+  color: ${(props) => props.color};
+  /* color: ${(props) => props.theme.colors.yellow}; */
 
   @media (min-width: ${(props) => props.theme.breakpoints.tablet}) {
     font-size: 4rem;
@@ -63,8 +68,19 @@ const ButtonsContainer = styled.div`
   justify-content: center;
 `;
 
-const ThreeLinesModal = () => {
+interface ThreeLinesModalProps {
+  gameState: GameState;
+  player: PlayerSymbol;
+}
+
+const ThreeLinesModal: React.FC<ThreeLinesModalProps> = ({
+  gameState,
+  player,
+}) => {
   const { isTablet, isDesktop } = useViewportSize();
+  const themeContext = useContext(ThemeContext);
+  const xPlayerColor = themeContext?.colors?.cyan;
+  const oPlayerColor = themeContext?.colors?.yellow;
 
   let iconWidth = "3rem";
   if (isTablet) iconWidth = "6.4rem";
@@ -72,22 +88,32 @@ const ThreeLinesModal = () => {
 
   return createPortal(
     <>
-      <Overlay />
-      <StyledThreeLinesModal>
-        <SmallText>OH NO, YOU LOST…</SmallText>
-        <TextContainer>
-          <IconOSvg width={iconWidth} />
-          <LargeText>TAKES THE ROUND</LargeText>
-        </TextContainer>
-        <ButtonsContainer>
-          <Button size="small" color="gray">
-            QUIT
-          </Button>
-          <Button size="small" color="yellow">
-            NEXT ROUND
-          </Button>
-        </ButtonsContainer>
-      </StyledThreeLinesModal>
+      {gameState === "wonOrLost" && (
+        <div>
+          <Overlay />
+          <StyledThreeLinesModal>
+            <SmallText>OH NO, YOU LOST…</SmallText>
+            <TextContainer>
+              {player === "X" ? (
+                <IconXSvg width={iconWidth} />
+              ) : (
+                <IconOSvg width={iconWidth} />
+              )}
+              <LargeText color={player === "X" ? xPlayerColor : oPlayerColor}>
+                TAKES THE ROUND
+              </LargeText>
+            </TextContainer>
+            <ButtonsContainer>
+              <Button size="small" color="gray">
+                QUIT
+              </Button>
+              <Button size="small" color="yellow">
+                NEXT ROUND
+              </Button>
+            </ButtonsContainer>
+          </StyledThreeLinesModal>
+        </div>
+      )}
     </>,
     document.getElementById("modal") as Element
   );
