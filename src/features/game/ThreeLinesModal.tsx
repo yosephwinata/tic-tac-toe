@@ -70,12 +70,14 @@ const ButtonsContainer = styled.div`
 
 interface ThreeLinesModalProps {
   gameState: GameState;
-  player: PlayerSymbol;
+  winningPlayer: PlayerSymbol;
+  player1: PlayerSymbol;
 }
 
 const ThreeLinesModal: React.FC<ThreeLinesModalProps> = ({
   gameState,
-  player,
+  winningPlayer,
+  player1,
 }) => {
   const { isTablet, isDesktop } = useViewportSize();
   const themeContext = useContext(ThemeContext);
@@ -86,20 +88,26 @@ const ThreeLinesModal: React.FC<ThreeLinesModalProps> = ({
   if (isTablet) iconWidth = "6.4rem";
   if (isDesktop) iconWidth = "6.4rem";
 
+  let smallText: string;
+  if (winningPlayer === player1) smallText = "PLAYER 1 WINS!";
+  else smallText = "PLAYER 2 WINS!";
+
   return createPortal(
     <>
       {gameState === "wonOrLost" && (
         <div>
           <Overlay />
           <StyledThreeLinesModal>
-            <SmallText>OH NO, YOU LOST…</SmallText>
+            <SmallText>{smallText}</SmallText>
             <TextContainer>
-              {player === "X" ? (
+              {winningPlayer === "X" ? (
                 <IconXSvg width={iconWidth} />
               ) : (
                 <IconOSvg width={iconWidth} />
               )}
-              <LargeText color={player === "X" ? xPlayerColor : oPlayerColor}>
+              <LargeText
+                color={winningPlayer === "X" ? xPlayerColor : oPlayerColor}
+              >
                 TAKES THE ROUND
               </LargeText>
             </TextContainer>

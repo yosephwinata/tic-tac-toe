@@ -154,7 +154,6 @@ const InGame: React.FC<InGameProps> = ({ player1Symbol }) => {
       colIndex,
       currentPlayer
     );
-    console.log("checkWinCondition", won);
     if (won) {
       dispatch({ type: "UPDATE_GAME_STATE", payload: "wonOrLost" });
     } else {
@@ -208,7 +207,6 @@ const InGame: React.FC<InGameProps> = ({ player1Symbol }) => {
 
   const checkTie = (): boolean => {
     if (moveCount.current === Math.pow(boardState.length, 2)) {
-      console.log("TIEEEEEEEDDDD");
       return true;
     }
     return false;
@@ -230,7 +228,11 @@ const InGame: React.FC<InGameProps> = ({ player1Symbol }) => {
         <ScoreCard />
       </ScoreCards>
 
-      <ThreeLinesModal gameState={gameState} player={currentPlayer} />
+      <ThreeLinesModal
+        gameState={gameState}
+        winningPlayer={currentPlayer}
+        player1={player1Symbol}
+      />
       {/* <TwoLinesModal /> */}
     </GameContainer>
   );
