@@ -116,6 +116,12 @@ const reducer = (state: StateType, action: ActionType): StateType => {
         action.payload.currentPlayer;
       return { ...state, boardState: newBoardState };
     }
+    case "INCREMENT_PLAYER1_SCORE": {
+      return { ...state, player1Score: state.player1Score + 1 };
+    }
+    case "INCREMENT_PLAYER2_SCORE": {
+      return { ...state, player2Score: state.player2Score + 1 };
+    }
     case "INCREMENT_TIES_SCORE": {
       return { ...state, tiesScore: state.tiesScore + 1 };
     }
@@ -160,6 +166,11 @@ const InGame: React.FC<InGameProps> = ({ player1Symbol }) => {
     dispatch({ type: "UPDATE_BOARD", payload });
     if (won) {
       dispatch({ type: "UPDATE_GAME_STATE", payload: "wonOrLost" });
+      if (currentPlayer === player1Symbol) {
+        dispatch({ type: "INCREMENT_PLAYER1_SCORE" });
+      } else {
+        dispatch({ type: "INCREMENT_PLAYER2_SCORE" });
+      }
     } else {
       if (checkTie()) {
         dispatch({ type: "INCREMENT_TIES_SCORE" });
@@ -252,12 +263,16 @@ const InGame: React.FC<InGameProps> = ({ player1Symbol }) => {
         onCellClick={handleCellClick}
       />
       <ScoreCards>
-        <ScoreCard bgColor={colors?.cyan} text={xPlayerCardText} score={-10} />
+        <ScoreCard
+          bgColor={colors?.cyan}
+          text={xPlayerCardText}
+          score={player1Symbol === "X" ? player1Score : player2Score}
+        />
         <ScoreCard bgColor={colors?.gray} text="TIES" score={tiesScore} />
         <ScoreCard
           bgColor={colors?.yellow}
           text={oPlayerCardText}
-          score={-10}
+          score={player1Symbol === "O" ? player1Score : player2Score}
         />
       </ScoreCards>
 

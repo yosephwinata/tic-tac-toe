@@ -13,7 +13,7 @@ const StyledScoreCard = styled.div<{ $bgColor?: string }>`
 
   @media (min-width: ${(props) => props.theme.breakpoints.tablet}) {
     width: 14rem;
-    height: 7.2rem;
+    height: 7.2refm;
     border-radius: 15px;
     gap: 0.5rem;
   }
