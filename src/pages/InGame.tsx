@@ -6,7 +6,7 @@ import XOBoard from "../features/game/XOBoard";
 import ScoreCard from "../features/game/ScoreCard";
 import ThreeLinesModal from "../features/game/ThreeLinesModal";
 import TwoLinesModal from "../features/game/TwoLinesModal";
-import { Cell, PlayerSymbol } from "../utils/types/types";
+import { Cell, PlayerSymbol, WinningCells } from "../utils/types/types";
 import { useContext, useReducer, useRef } from "react";
 import { GameState } from "../utils/types/types";
 
@@ -64,6 +64,7 @@ type StateType = {
   gameState: GameState;
   currentPlayer: PlayerSymbol;
   boardState: Cell[][];
+  winningCells: WinningCells;
   player1Score: number;
   player2Score: number;
   tiesScore: number;
@@ -76,6 +77,11 @@ const initialState: StateType = {
     [null, null, null],
     [null, null, null],
     [null, null, null],
+  ],
+  winningCells: [
+    [null, null],
+    [null, null],
+    [null, null],
   ],
   player1Score: 0,
   player2Score: 0,
@@ -95,6 +101,7 @@ type ActionType =
     }
   | { type: "SWITCH_TURN" }
   | { type: "UPDATE_BOARD"; payload: UpdateCellPayload }
+  | { type: "UPDATE_WINNING_CELLS"; payload: WinningCells }
   | { type: "INCREMENT_PLAYER1_SCORE" }
   | { type: "INCREMENT_PLAYER2_SCORE" }
   | { type: "INCREMENT_TIES_SCORE" };
@@ -115,6 +122,9 @@ const reducer = (state: StateType, action: ActionType): StateType => {
       newBoardState[action.payload.rowIndex][action.payload.colIndex] =
         action.payload.currentPlayer;
       return { ...state, boardState: newBoardState };
+    }
+    case "UPDATE_WINNING_CELLS": {
+      return { ...state, winningCells: action.payload };
     }
     case "INCREMENT_PLAYER1_SCORE": {
       return { ...state, player1Score: state.player1Score + 1 };
@@ -140,6 +150,7 @@ const InGame: React.FC<InGameProps> = ({ player1Symbol }) => {
       gameState,
       currentPlayer,
       boardState,
+      winningCells,
       player1Score,
       player2Score,
       tiesScore,
@@ -157,15 +168,16 @@ const InGame: React.FC<InGameProps> = ({ player1Symbol }) => {
       colIndex,
       currentPlayer,
     };
-    const won = checkWinCondition(
+    const tempWinningCells = checkWinCondition(
       boardState,
       rowIndex,
       colIndex,
       currentPlayer
     );
     dispatch({ type: "UPDATE_BOARD", payload });
-    if (won) {
+    if (tempWinningCells) {
       dispatch({ type: "UPDATE_GAME_STATE", payload: "wonOrLost" });
+      dispatch({ type: "UPDATE_WINNING_CELLS", payload: tempWinningCells });
       if (currentPlayer === player1Symbol) {
         dispatch({ type: "INCREMENT_PLAYER1_SCORE" });
       } else {
@@ -257,8 +269,8 @@ const InGame: React.FC<InGameProps> = ({ player1Symbol }) => {
         </RestartButton>
       </TopBar>
       <XOBoard
-        gameState={gameState}
         boardState={boardState}
+        winningCells={winningCells}
         currentPlayer={currentPlayer}
         onCellClick={handleCellClick}
       />

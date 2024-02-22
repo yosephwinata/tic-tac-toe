@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import XOCell from "./XOCell";
-import { Cell, GameState, PlayerSymbol } from "/src/utils/types/types";
+import { Cell, PlayerSymbol, WinningCells } from "/src/utils/types/types";
 
 const StyledXOBoard = styled.div`
   display: grid;
@@ -11,15 +11,15 @@ const StyledXOBoard = styled.div`
 `;
 
 interface XOBoardProps {
-  gameState: GameState;
   boardState: Cell[][];
+  winningCells: WinningCells;
   currentPlayer: PlayerSymbol;
   onCellClick: (rowIndex: number, colIndex: number) => void;
 }
 
 const XOBoard: React.FC<XOBoardProps> = ({
-  gameState,
   boardState,
+  winningCells,
   currentPlayer,
   onCellClick,
 }) => {
@@ -32,7 +32,7 @@ const XOBoard: React.FC<XOBoardProps> = ({
               value={value}
               rowIndex={rowIndex}
               colIndex={colIndex}
-              gameState={gameState}
+              winningCells={winningCells}
               currentPlayer={currentPlayer}
               onCellClick={onCellClick}
             />
