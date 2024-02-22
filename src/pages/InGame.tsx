@@ -155,13 +155,13 @@ const InGame: React.FC<InGameProps> = ({ player1Symbol }) => {
       currentPlayer
     );
     console.log("wo00o0n", won);
+    dispatch({ type: "UPDATE_BOARD", payload });
     if (won) {
       dispatch({ type: "UPDATE_GAME_STATE", payload: "wonOrLost" });
     } else {
       if (checkTie()) {
         dispatch({ type: "UPDATE_GAME_STATE", payload: "tied" });
       }
-      dispatch({ type: "UPDATE_BOARD", payload });
       dispatch({ type: "SWITCH_TURN" });
     }
   };
@@ -234,7 +234,12 @@ const InGame: React.FC<InGameProps> = ({ player1Symbol }) => {
           <RestartSvg width="1.6rem" />
         </RestartButton>
       </TopBar>
-      <XOBoard boardState={boardState} onCellClick={handleCellClick} />
+      <XOBoard
+        gameState={gameState}
+        boardState={boardState}
+        currentPlayer={currentPlayer}
+        onCellClick={handleCellClick}
+      />
       <ScoreCards>
         <ScoreCard />
         <ScoreCard />

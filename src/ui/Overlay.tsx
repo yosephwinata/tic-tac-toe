@@ -11,7 +11,7 @@ const StyledOverlay = styled.div`
   opacity: 50%;
 `;
 
-const Overlay = () => {
+const Overlay: React.FC = () => {
   return <StyledOverlay></StyledOverlay>;
 };
 
