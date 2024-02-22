@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { ThemeContext } from "styled-components";
 import LogoSvg from "../svg/LogoSvg";
 import TurnHint from "../features/game/TurnHint";
 import RestartSvg from "../svg/RestartSvg";
@@ -7,7 +7,7 @@ import ScoreCard from "../features/game/ScoreCard";
 import ThreeLinesModal from "../features/game/ThreeLinesModal";
 import TwoLinesModal from "../features/game/TwoLinesModal";
 import { Cell, PlayerSymbol } from "../utils/types/types";
-import { useReducer, useRef } from "react";
+import { useContext, useReducer, useRef } from "react";
 import { GameState } from "../utils/types/types";
 
 const GameContainer = styled.div`
@@ -64,7 +64,6 @@ type StateType = {
   gameState: GameState;
   currentPlayer: PlayerSymbol;
   boardState: Cell[][];
-  moveCount: number;
   player1Score: number;
   player2Score: number;
   tiesScore: number;
@@ -78,7 +77,6 @@ const initialState: StateType = {
     [null, null, null],
     [null, null, null],
   ],
-  moveCount: 0,
   player1Score: 0,
   player2Score: 0,
   tiesScore: 0,
@@ -91,18 +89,20 @@ interface UpdateCellPayload {
 }
 
 type ActionType =
+  | {
+      type: "UPDATE_GAME_STATE";
+      payload: GameState;
+    }
   | { type: "SWITCH_TURN" }
   | { type: "UPDATE_BOARD"; payload: UpdateCellPayload }
   | { type: "INCREMENT_PLAYER1_SCORE" }
   | { type: "INCREMENT_PLAYER2_SCORE" }
-  | { type: "INCREMENT_TIES_SCORE" }
-  | {
-      type: "UPDATE_GAME_STATE";
-      payload: GameState;
-    };
+  | { type: "INCREMENT_TIES_SCORE" };
 
 const reducer = (state: StateType, action: ActionType): StateType => {
   switch (action.type) {
+    case "UPDATE_GAME_STATE":
+      return { ...state, gameState: action.payload };
     case "SWITCH_TURN": {
       let nextPlayer: PlayerSymbol;
       if (state.currentPlayer === "X") nextPlayer = "O";
@@ -116,8 +116,9 @@ const reducer = (state: StateType, action: ActionType): StateType => {
         action.payload.currentPlayer;
       return { ...state, boardState: newBoardState };
     }
-    case "UPDATE_GAME_STATE":
-      return { ...state, gameState: action.payload };
+    case "INCREMENT_TIES_SCORE": {
+      return { ...state, tiesScore: state.tiesScore + 1 };
+    }
     default:
       throw new Error("Action unknown");
   }
@@ -140,6 +141,8 @@ const InGame: React.FC<InGameProps> = ({ player1Symbol }) => {
     dispatch,
   ] = useReducer(reducer, initialState);
   const moveCount = useRef(0);
+  const themeContext = useContext(ThemeContext);
+  const colors = themeContext?.colors;
 
   const handleCellClick = (rowIndex: number, colIndex: number) => {
     moveCount.current += 1;
@@ -154,12 +157,12 @@ const InGame: React.FC<InGameProps> = ({ player1Symbol }) => {
       colIndex,
       currentPlayer
     );
-    console.log("wo00o0n", won);
     dispatch({ type: "UPDATE_BOARD", payload });
     if (won) {
       dispatch({ type: "UPDATE_GAME_STATE", payload: "wonOrLost" });
     } else {
       if (checkTie()) {
+        dispatch({ type: "INCREMENT_TIES_SCORE" });
         dispatch({ type: "UPDATE_GAME_STATE", payload: "tied" });
       }
       dispatch({ type: "SWITCH_TURN" });
@@ -218,12 +221,20 @@ const InGame: React.FC<InGameProps> = ({ player1Symbol }) => {
   };
 
   const checkTie = (): boolean => {
-    console.log("ttieeee");
     if (moveCount.current === Math.pow(boardState.length, 2)) {
       return true;
     }
     return false;
   };
+
+  let xPlayerCardText: string, oPlayerCardText: string;
+  if (player1Symbol === "X") {
+    xPlayerCardText = "X (P1)";
+    oPlayerCardText = "O (P2)";
+  } else {
+    xPlayerCardText = "X (P2)";
+    oPlayerCardText = "O (P1)";
+  }
 
   return (
     <GameContainer>
@@ -241,9 +252,13 @@ const InGame: React.FC<InGameProps> = ({ player1Symbol }) => {
         onCellClick={handleCellClick}
       />
       <ScoreCards>
-        <ScoreCard />
-        <ScoreCard />
-        <ScoreCard />
+        <ScoreCard bgColor={colors?.cyan} text={xPlayerCardText} score={-10} />
+        <ScoreCard bgColor={colors?.gray} text="TIES" score={tiesScore} />
+        <ScoreCard
+          bgColor={colors?.yellow}
+          text={oPlayerCardText}
+          score={-10}
+        />
       </ScoreCards>
 
       <ThreeLinesModal

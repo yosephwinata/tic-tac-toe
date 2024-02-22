@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
-const StyledScoreCard = styled.div`
+const StyledScoreCard = styled.div<{ $bgColor?: string }>`
   width: 9.6rem;
   height: 6.4rem;
-  background-color: ${(props) => props.theme.colors.cyan};
+  background-color: ${(props) => props.$bgColor || props.theme.colors.cyan};
   border-radius: 10px;
   display: flex;
   flex-direction: column;
@@ -19,7 +19,7 @@ const StyledScoreCard = styled.div`
   }
 `;
 
-const ScoreDescription = styled.p`
+const ScoreText = styled.p`
   font-size: 1.4rem;
   letter-spacing: 0.88px;
   color: ${(props) => props.theme.colors.darkNavy};
@@ -37,11 +37,17 @@ const ScoreNum = styled.p`
   }
 `;
 
-const ScoreCard: React.FC = () => {
+interface ScoreCardProps {
+  bgColor?: string;
+  text: string;
+  score: number;
+}
+
+const ScoreCard: React.FC<ScoreCardProps> = ({ bgColor, text, score }) => {
   return (
-    <StyledScoreCard>
-      <ScoreDescription>X (YOU)</ScoreDescription>
-      <ScoreNum>14</ScoreNum>
+    <StyledScoreCard $bgColor={bgColor}>
+      <ScoreText>{text}</ScoreText>
+      <ScoreNum>{score}</ScoreNum>
     </StyledScoreCard>
   );
 };
