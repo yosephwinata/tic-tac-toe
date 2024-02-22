@@ -4,10 +4,13 @@ import Overlay from "/src/ui/Overlay";
 import IconOSvg from "/src/svg/IconOSvg";
 import Button from "/src/ui/Button";
 import useViewportSize from "/src/hooks/useViewportSize";
-import { GameState, PlayerSymbol } from "/src/utils/types/types";
+import {
+  GameState,
+  InGameActionType,
+  PlayerSymbol,
+} from "/src/utils/types/types";
 import IconXSvg from "/src/svg/IconXSvg";
 import { useContext } from "react";
-import theme from "/src/styles/theme";
 
 const StyledThreeLinesModal = styled.div`
   position: fixed;
@@ -72,12 +75,16 @@ interface ThreeLinesModalProps {
   gameState: GameState;
   winningPlayer: PlayerSymbol;
   player1: PlayerSymbol;
+  dispatch: React.Dispatch<InGameActionType>;
+  resetMoveCount: () => void;
 }
 
 const ThreeLinesModal: React.FC<ThreeLinesModalProps> = ({
   gameState,
   winningPlayer,
   player1,
+  dispatch,
+  resetMoveCount,
 }) => {
   const { isTablet, isDesktop } = useViewportSize();
   const themeContext = useContext(ThemeContext);
@@ -91,6 +98,11 @@ const ThreeLinesModal: React.FC<ThreeLinesModalProps> = ({
   let smallText: string;
   if (winningPlayer === player1) smallText = "PLAYER 1 WINS!";
   else smallText = "PLAYER 2 WINS!";
+
+  const handleNextRoundClick = () => {
+    dispatch({ type: "GO_TO_NEXT_ROUND" });
+    resetMoveCount();
+  };
 
   return createPortal(
     <>
@@ -115,7 +127,11 @@ const ThreeLinesModal: React.FC<ThreeLinesModalProps> = ({
               <Button size="small" color="gray">
                 QUIT
               </Button>
-              <Button size="small" color="yellow">
+              <Button
+                size="small"
+                color="yellow"
+                onClick={handleNextRoundClick}
+              >
                 NEXT ROUND
               </Button>
             </ButtonsContainer>
