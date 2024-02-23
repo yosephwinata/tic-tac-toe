@@ -8,11 +8,18 @@ import ThreeLinesModal from "../features/game/ThreeLinesModal";
 import TwoLinesModal from "../features/game/TwoLinesModal";
 import {
   Cell,
+  CurrentPage,
   InGameActionType,
   InGameStateType,
   PlayerSymbol,
 } from "../utils/types/types";
-import { useContext, useReducer, useRef } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useReducer,
+  useRef,
+} from "react";
 
 const GameContainer = styled.div`
   width: 32.8rem;
@@ -114,7 +121,7 @@ const reducer = (
     case "INCREMENT_TIES_SCORE": {
       return { ...state, tiesScore: state.tiesScore + 1 };
     }
-    case "GO_TO_NEXT_ROUND": {
+    case "RESET_GAME": {
       return {
         ...state,
         gameState: "playing",
@@ -131,6 +138,14 @@ const reducer = (
         ],
       };
     }
+    case "RESET_SCORES": {
+      return {
+        ...state,
+        player1Score: 0,
+        player2Score: 0,
+        tiesScore: 0,
+      };
+    }
     default:
       throw new Error("Action unknown");
   }
@@ -138,9 +153,10 @@ const reducer = (
 
 interface InGameProps {
   player1Symbol: PlayerSymbol;
+  setCurrentPage: Dispatch<SetStateAction<string>>;
 }
 
-const InGame: React.FC<InGameProps> = ({ player1Symbol }) => {
+const InGame: React.FC<InGameProps> = ({ player1Symbol, setCurrentPage }) => {
   const [
     {
       gameState,
@@ -250,6 +266,18 @@ const InGame: React.FC<InGameProps> = ({ player1Symbol }) => {
     return false;
   };
 
+  const handleQuitGame = (): void => {
+    dispatch({ type: "RESET_GAME" });
+    dispatch({ type: "RESET_SCORES" });
+    resetMoveCount();
+    setCurrentPage("mainMenu");
+  };
+
+  const handleNextRoundClick = () => {
+    dispatch({ type: "RESET_GAME" });
+    resetMoveCount();
+  };
+
   let xPlayerCardText: string, oPlayerCardText: string;
   if (player1Symbol === "X") {
     xPlayerCardText = "X (P1)";
@@ -293,9 +321,14 @@ const InGame: React.FC<InGameProps> = ({ player1Symbol }) => {
         winningPlayer={currentPlayer}
         player1={player1Symbol}
         dispatch={dispatch}
-        resetMoveCount={resetMoveCount}
+        onQuitClick={handleQuitGame}
+        onNextRoundClick={handleNextRoundClick}
       />
-      <TwoLinesModal gameState={gameState} />
+      <TwoLinesModal
+        gameState={gameState}
+        onQuitClick={handleQuitGame}
+        onNextRoundClick={handleNextRoundClick}
+      />
     </GameContainer>
   );
 };

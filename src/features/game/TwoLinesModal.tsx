@@ -42,9 +42,15 @@ const ButtonsContainer = styled.div`
 
 interface TwoLinesModalProps {
   gameState: GameState;
+  onNextRoundClick: () => void;
+  onQuitClick: () => void;
 }
 
-const TwoLinesModal: React.FC<TwoLinesModalProps> = ({ gameState }) => {
+const TwoLinesModal: React.FC<TwoLinesModalProps> = ({
+  gameState,
+  onNextRoundClick,
+  onQuitClick,
+}) => {
   return createPortal(
     <>
       {(gameState === "restart" || gameState === "tied") && (
@@ -54,14 +60,24 @@ const TwoLinesModal: React.FC<TwoLinesModalProps> = ({ gameState }) => {
             {gameState === "restart" && <Text>RESTART GAME?</Text>}
             {gameState === "tied" && <Text>ROUND TIED</Text>}
             <ButtonsContainer>
-              <Button size="small" color="gray">
-                {gameState === "restart" && "NO, CANCEL"}
-                {gameState === "tied" && "QUIT"}
-              </Button>
-              <Button size="small" color="yellow">
-                {gameState === "restart" && "YES, RESTART"}
-                {gameState === "tied" && "NEXT ROUND"}
-              </Button>
+              {gameState === "restart" ? (
+                <Button size="small" color="gray">
+                  NO, CANCEL
+                </Button>
+              ) : (
+                <Button size="small" color="gray" onClick={onQuitClick}>
+                  QUIT
+                </Button>
+              )}
+              {gameState === "restart" ? (
+                <Button size="small" color="yellow">
+                  YES, RESTART
+                </Button>
+              ) : (
+                <Button size="small" color="yellow" onClick={onNextRoundClick}>
+                  NEXT ROUND
+                </Button>
+              )}
             </ButtonsContainer>
           </StyledTwoLinesModal>
         </div>

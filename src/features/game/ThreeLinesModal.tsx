@@ -76,15 +76,16 @@ interface ThreeLinesModalProps {
   winningPlayer: PlayerSymbol;
   player1: PlayerSymbol;
   dispatch: React.Dispatch<InGameActionType>;
-  resetMoveCount: () => void;
+  onNextRoundClick: () => void;
+  onQuitClick: () => void;
 }
 
 const ThreeLinesModal: React.FC<ThreeLinesModalProps> = ({
   gameState,
   winningPlayer,
   player1,
-  dispatch,
-  resetMoveCount,
+  onNextRoundClick,
+  onQuitClick,
 }) => {
   const { isTablet, isDesktop } = useViewportSize();
   const themeContext = useContext(ThemeContext);
@@ -98,11 +99,6 @@ const ThreeLinesModal: React.FC<ThreeLinesModalProps> = ({
   let smallText: string;
   if (winningPlayer === player1) smallText = "PLAYER 1 WINS!";
   else smallText = "PLAYER 2 WINS!";
-
-  const handleNextRoundClick = () => {
-    dispatch({ type: "GO_TO_NEXT_ROUND" });
-    resetMoveCount();
-  };
 
   return createPortal(
     <>
@@ -124,14 +120,10 @@ const ThreeLinesModal: React.FC<ThreeLinesModalProps> = ({
               </LargeText>
             </TextContainer>
             <ButtonsContainer>
-              <Button size="small" color="gray">
+              <Button size="small" color="gray" onClick={onQuitClick}>
                 QUIT
               </Button>
-              <Button
-                size="small"
-                color="yellow"
-                onClick={handleNextRoundClick}
-              >
+              <Button size="small" color="yellow" onClick={onNextRoundClick}>
                 NEXT ROUND
               </Button>
             </ButtonsContainer>

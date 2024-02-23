@@ -25,7 +25,8 @@ export type InGameActionType =
   | { type: "INCREMENT_PLAYER1_SCORE" }
   | { type: "INCREMENT_PLAYER2_SCORE" }
   | { type: "INCREMENT_TIES_SCORE" }
-  | { type: "GO_TO_NEXT_ROUND" };
+  | { type: "RESET_GAME" }
+  | { type: "RESET_SCORES" };
 
 export type CurrentPage = "mainMenu" | "inGame";
 export type PlayerSymbol = "X" | "O";

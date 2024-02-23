@@ -28,7 +28,9 @@ const App: React.FC = () => {
       <MainMenu onNewGameVsPlayerClick={handleNewGameVsPlayer} />
     );
   } else if (currentPage === "inGame") {
-    currentPageComponent = <InGame player1Symbol={player1Symbol} />;
+    currentPageComponent = (
+      <InGame player1Symbol={player1Symbol} setCurrentPage={setCurrentPage} />
+    );
   }
 
   return (
