@@ -12,6 +12,9 @@ const StyledXOCell = styled.button<{ disabled: boolean; $bgColor?: string }>`
   border: none;
   border-radius: 10px;
   box-shadow: 0 0.75rem ${(props) => props.theme.colors.veryDarkNavy};
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   ${(props) =>
     props.disabled &&
