@@ -2,7 +2,8 @@ import { createPortal } from "react-dom";
 import styled from "styled-components";
 import Overlay from "/src/ui/Overlay";
 import Button from "/src/ui/Button";
-import { GameState } from "/src/utils/types/types";
+import { GameState, InGameActionType } from "/src/utils/types/types";
+import { Dispatch } from "react";
 
 const StyledTwoLinesModal = styled.div`
   position: fixed;
@@ -42,14 +43,18 @@ const ButtonsContainer = styled.div`
 
 interface TwoLinesModalProps {
   gameState: GameState;
+  dispatch: Dispatch<InGameActionType>;
   onNextRoundClick: () => void;
   onQuitClick: () => void;
+  resetMoveCount: () => void;
 }
 
 const TwoLinesModal: React.FC<TwoLinesModalProps> = ({
   gameState,
+  dispatch,
   onNextRoundClick,
   onQuitClick,
+  resetMoveCount,
 }) => {
   return createPortal(
     <>
@@ -61,7 +66,13 @@ const TwoLinesModal: React.FC<TwoLinesModalProps> = ({
             {gameState === "tied" && <Text>ROUND TIED</Text>}
             <ButtonsContainer>
               {gameState === "restart" ? (
-                <Button size="small" color="gray">
+                <Button
+                  size="small"
+                  color="gray"
+                  onClick={() => {
+                    dispatch({ type: "UPDATE_GAME_STATE", payload: "playing" });
+                  }}
+                >
                   NO, CANCEL
                 </Button>
               ) : (
@@ -70,7 +81,14 @@ const TwoLinesModal: React.FC<TwoLinesModalProps> = ({
                 </Button>
               )}
               {gameState === "restart" ? (
-                <Button size="small" color="yellow">
+                <Button
+                  size="small"
+                  color="yellow"
+                  onClick={() => {
+                    dispatch({ type: "RESET_GAME" });
+                    resetMoveCount();
+                  }}
+                >
                   YES, RESTART
                 </Button>
               ) : (

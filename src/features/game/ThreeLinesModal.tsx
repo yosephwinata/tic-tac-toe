@@ -10,7 +10,7 @@ import {
   PlayerSymbol,
 } from "/src/utils/types/types";
 import IconXSvg from "/src/svg/IconXSvg";
-import { useContext } from "react";
+import { Dispatch, useContext } from "react";
 
 const StyledThreeLinesModal = styled.div`
   position: fixed;
@@ -75,7 +75,7 @@ interface ThreeLinesModalProps {
   gameState: GameState;
   winningPlayer: PlayerSymbol;
   player1: PlayerSymbol;
-  dispatch: React.Dispatch<InGameActionType>;
+  dispatch: Dispatch<InGameActionType>;
   onNextRoundClick: () => void;
   onQuitClick: () => void;
 }

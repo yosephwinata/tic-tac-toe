@@ -278,6 +278,10 @@ const InGame: React.FC<InGameProps> = ({ player1Symbol, setCurrentPage }) => {
     resetMoveCount();
   };
 
+  const handleRestartClick = () => {
+    dispatch({ type: "UPDATE_GAME_STATE", payload: "restart" });
+  };
+
   let xPlayerCardText: string, oPlayerCardText: string;
   if (player1Symbol === "X") {
     xPlayerCardText = "X (P1)";
@@ -292,7 +296,7 @@ const InGame: React.FC<InGameProps> = ({ player1Symbol, setCurrentPage }) => {
       <TopBar>
         <LogoSvg />
         <TurnHint currentPlayer={currentPlayer} />
-        <RestartButton>
+        <RestartButton onClick={handleRestartClick}>
           <RestartSvg width="1.6rem" />
         </RestartButton>
       </TopBar>
@@ -326,8 +330,10 @@ const InGame: React.FC<InGameProps> = ({ player1Symbol, setCurrentPage }) => {
       />
       <TwoLinesModal
         gameState={gameState}
+        dispatch={dispatch}
         onQuitClick={handleQuitGame}
         onNextRoundClick={handleNextRoundClick}
+        resetMoveCount={resetMoveCount}
       />
     </GameContainer>
   );
