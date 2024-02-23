@@ -2,12 +2,7 @@ import styled, { ThemeContext, css } from "styled-components";
 import IconXSvg from "/src/svg/IconXSvg";
 import useViewportSize from "/src/hooks/useViewportSize";
 import IconOSvg from "/src/svg/IconOSvg";
-import {
-  Cell,
-  GameState,
-  PlayerSymbol,
-  WinningCells,
-} from "/src/utils/types/types";
+import { Cell, PlayerSymbol, WinningCells } from "/src/utils/types/types";
 import { useContext } from "react";
 
 const StyledXOCell = styled.button<{ disabled: boolean; $bgColor?: string }>`
@@ -16,7 +11,7 @@ const StyledXOCell = styled.button<{ disabled: boolean; $bgColor?: string }>`
   background-color: ${(props) => props.$bgColor};
   border: none;
   border-radius: 10px;
-  box-shadow: 0 0.8rem ${(props) => props.theme.colors.veryDarkNavy};
+  box-shadow: 0 0.75rem ${(props) => props.theme.colors.veryDarkNavy};
 
   ${(props) =>
     props.disabled &&

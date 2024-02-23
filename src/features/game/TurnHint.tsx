@@ -11,7 +11,7 @@ const StyledTurnHint = styled.div`
   padding: 0 1.5rem;
   height: 4rem;
   border-radius: 5px;
-  box-shadow: 0 0.4rem ${(props) => props.theme.colors.veryDarkNavy};
+  box-shadow: 0 0.6rem ${(props) => props.theme.colors.veryDarkNavy};
   display: inline-flex;
   gap: 0.9rem;
   align-items: center;
@@ -24,7 +24,6 @@ const StyledTurnHint = styled.div`
     padding: 0 3rem;
     height: 5.2rem;
     border-radius: 10px;
-    box-shadow: 0 0.5rem ${(props) => props.theme.colors.veryDarkNavy};
     gap: 1.3rem;
   }
 `;

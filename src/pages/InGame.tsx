@@ -8,7 +8,6 @@ import ThreeLinesModal from "../features/game/ThreeLinesModal";
 import TwoLinesModal from "../features/game/TwoLinesModal";
 import {
   Cell,
-  CurrentPage,
   InGameActionType,
   InGameStateType,
   PlayerSymbol,
@@ -53,16 +52,23 @@ const RestartButton = styled.button`
   background-color: ${(props) => props.theme.colors.gray};
   border: none;
   border-radius: 5px;
-  box-shadow: 0 0.4rem ${(props) => props.theme.colors.darkGray};
+  box-shadow: 0 0.6rem ${(props) => props.theme.colors.darkGray};
   display: inline-flex;
   align-items: center;
   justify-content: center;
+
+  &:hover {
+    background-color: ${(props) => props.theme.colors.lightGray};
+  }
+
+  &:active {
+    transform: translateY(0.24rem);
+  }
 
   @media (min-width: ${(props) => props.theme.breakpoints.tablet}) {
     width: 5.2rem;
     height: 5.2rem;
     border-radius: 10px;
-    box-shadow: 0 0.5rem ${(props) => props.theme.colors.darkGray};
   }
 `;
 
