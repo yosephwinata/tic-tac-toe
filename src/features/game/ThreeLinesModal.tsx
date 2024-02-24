@@ -1,5 +1,5 @@
 import { createPortal } from "react-dom";
-import styled, { ThemeContext } from "styled-components";
+import styled, { ThemeContext, css, keyframes } from "styled-components";
 import Overlay from "/src/ui/Overlay";
 import IconOSvg from "/src/svg/IconOSvg";
 import Button from "/src/ui/Button";
@@ -12,7 +12,16 @@ import {
 import IconXSvg from "/src/svg/IconXSvg";
 import { Dispatch, useContext } from "react";
 
-const StyledThreeLinesModal = styled.div`
+const slideInAnimation = keyframes`
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(-50%);
+  }
+`;
+
+const StyledThreeLinesModal = styled.div<{ show: boolean }>`
   position: fixed;
   left: 0;
   top: 50%;
@@ -23,6 +32,12 @@ const StyledThreeLinesModal = styled.div`
   z-index: 40;
   text-align: center;
   padding-top: 4rem;
+  animation: ${({ show }) =>
+    show
+      ? css`
+          ${slideInAnimation} 0.75s forwards
+        `
+      : "none"};
 
   @media (min-width: ${(props) => props.theme.breakpoints.tablet}) {
     height: 26.6rem;
@@ -100,12 +115,14 @@ const ThreeLinesModal: React.FC<ThreeLinesModalProps> = ({
   if (winningPlayer === player1) smallText = "PLAYER 1 WINS!";
   else smallText = "PLAYER 2 WINS!";
 
+  const show = gameState === "wonOrLost";
+
   return createPortal(
     <>
-      {gameState === "wonOrLost" && (
+      {show && (
         <div>
           <Overlay />
-          <StyledThreeLinesModal>
+          <StyledThreeLinesModal show={show}>
             <SmallText>{smallText}</SmallText>
             <TextContainer>
               {winningPlayer === "X" ? (
