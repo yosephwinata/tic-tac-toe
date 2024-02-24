@@ -3,7 +3,9 @@ import IconXSvg from "/src/svg/IconXSvg";
 import useViewportSize from "/src/hooks/useViewportSize";
 import IconOSvg from "/src/svg/IconOSvg";
 import { Cell, PlayerSymbol, WinningCells } from "/src/utils/types/types";
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import XOutlineSvg from "/src/svg/XOutlineSvg";
+import OOutlineSvg from "/src/svg/OOutlineSvg";
 
 const StyledXOCell = styled.button<{ disabled: boolean; $bgColor?: string }>`
   width: 9.6rem;
@@ -36,7 +38,7 @@ interface XOCellProps {
   colIndex: number;
   winningCells: WinningCells;
   currentPlayer: PlayerSymbol;
-  onCellClick: (rowIndex: number, colIndex: number) => void;
+  onCellUpdate: (rowIndex: number, colIndex: number) => void;
 }
 
 const XOCell: React.FC<XOCellProps> = ({
@@ -45,9 +47,10 @@ const XOCell: React.FC<XOCellProps> = ({
   colIndex,
   winningCells,
   currentPlayer,
-  onCellClick,
+  onCellUpdate,
 }) => {
   const { isTablet, isDesktop } = useViewportSize();
+  const [isHovered, setIsHovered] = useState(false);
   const disabled = value !== null;
   const themeContext = useContext(ThemeContext);
   const cyanColor = themeContext?.colors?.cyan;
@@ -72,14 +75,27 @@ const XOCell: React.FC<XOCellProps> = ({
     }
   });
 
+  const handleCellClick = () => {
+    setIsHovered(false);
+    onCellUpdate(rowIndex, colIndex);
+  };
+
   return (
     <StyledXOCell
       disabled={disabled}
       $bgColor={bgColor}
-      onClick={() => onCellClick(rowIndex, colIndex)}
+      onClick={handleCellClick}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       {value === "X" && <IconXSvg width={width} fillColor={xIconColor} />}
       {value === "O" && <IconOSvg width={width} fillColor={OIconColor} />}
+      {currentPlayer === "X" && (
+        <XOutlineSvg width={width} isVisible={isHovered} />
+      )}
+      {currentPlayer === "O" && (
+        <OOutlineSvg width={width} isVisible={isHovered} />
+      )}
     </StyledXOCell>
   );
 };

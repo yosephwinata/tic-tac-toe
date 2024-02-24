@@ -183,7 +183,7 @@ const InGame: React.FC<InGameProps> = ({ player1Symbol, setCurrentPage }) => {
     moveCount.current = 0;
   };
 
-  const handleCellClick = (rowIndex: number, colIndex: number) => {
+  const handleCellUpdate = (rowIndex: number, colIndex: number) => {
     moveCount.current += 1;
     const payload = {
       rowIndex,
@@ -310,7 +310,7 @@ const InGame: React.FC<InGameProps> = ({ player1Symbol, setCurrentPage }) => {
         boardState={boardState}
         winningCells={winningCells}
         currentPlayer={currentPlayer}
-        onCellClick={handleCellClick}
+        onCellUpdate={handleCellUpdate}
       />
       <ScoreCards>
         <ScoreCard

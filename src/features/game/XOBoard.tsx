@@ -14,14 +14,14 @@ interface XOBoardProps {
   boardState: Cell[][];
   winningCells: WinningCells;
   currentPlayer: PlayerSymbol;
-  onCellClick: (rowIndex: number, colIndex: number) => void;
+  onCellUpdate: (rowIndex: number, colIndex: number) => void;
 }
 
 const XOBoard: React.FC<XOBoardProps> = ({
   boardState,
   winningCells,
   currentPlayer,
-  onCellClick,
+  onCellUpdate,
 }) => {
   return (
     <StyledXOBoard>
@@ -34,7 +34,7 @@ const XOBoard: React.FC<XOBoardProps> = ({
               colIndex={colIndex}
               winningCells={winningCells}
               currentPlayer={currentPlayer}
-              onCellClick={onCellClick}
+              onCellUpdate={onCellUpdate}
             />
           </div>
         ))
