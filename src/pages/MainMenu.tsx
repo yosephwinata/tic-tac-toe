@@ -55,7 +55,12 @@ const OptionButton = styled.button<{ $isSelected: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
+  cursor: ${(props) => (props.$isSelected ? "default" : "pointer")};
+
+  &:hover {
+    background-color: ${(props) =>
+      !props.$isSelected && props.theme.colors.semiDarkNavy};
+  }
 `;
 
 const Hint = styled.p`
