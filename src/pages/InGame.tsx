@@ -7,8 +7,10 @@ import ScoreCard from "../features/game/ScoreCard";
 import ThreeLinesModal from "../features/game/ThreeLinesModal";
 import TwoLinesModal from "../features/game/TwoLinesModal";
 import {
+  AILevel,
   Cell,
   CurrentPage,
+  GameMode,
   InGameActionType,
   InGameStateType,
   PlayerSymbol,
@@ -157,10 +159,17 @@ const reducer = (
 
 interface InGameProps {
   player1Symbol: PlayerSymbol;
+  gameMode: GameMode;
+  aiLevel: AILevel;
   setCurrentPage: Dispatch<SetStateAction<CurrentPage>>;
 }
 
-const InGame: React.FC<InGameProps> = ({ player1Symbol, setCurrentPage }) => {
+const InGame: React.FC<InGameProps> = ({
+  player1Symbol,
+  gameMode,
+  aiLevel,
+  setCurrentPage,
+}) => {
   const [
     {
       gameState,

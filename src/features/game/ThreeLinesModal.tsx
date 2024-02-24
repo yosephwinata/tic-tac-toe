@@ -1,4 +1,5 @@
 import { createPortal } from "react-dom";
+import { Fragment } from "react";
 import styled, { ThemeContext, css, keyframes } from "styled-components";
 import Overlay from "/src/ui/Overlay";
 import IconOSvg from "/src/svg/IconOSvg";
@@ -120,7 +121,7 @@ const ThreeLinesModal: React.FC<ThreeLinesModalProps> = ({
   return createPortal(
     <>
       {show && (
-        <div>
+        <Fragment>
           <Overlay />
           <StyledThreeLinesModal show={show}>
             <SmallText>{smallText}</SmallText>
@@ -145,7 +146,7 @@ const ThreeLinesModal: React.FC<ThreeLinesModalProps> = ({
               </Button>
             </ButtonsContainer>
           </StyledThreeLinesModal>
-        </div>
+        </Fragment>
       )}
     </>,
     document.getElementById("modal") as Element

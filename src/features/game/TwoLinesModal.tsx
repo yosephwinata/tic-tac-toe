@@ -1,4 +1,5 @@
 import { createPortal } from "react-dom";
+import { Fragment } from "react";
 import styled from "styled-components";
 import Overlay from "/src/ui/Overlay";
 import Button from "/src/ui/Button";
@@ -59,7 +60,7 @@ const TwoLinesModal: React.FC<TwoLinesModalProps> = ({
   return createPortal(
     <>
       {(gameState === "restart" || gameState === "tied") && (
-        <div>
+        <Fragment>
           <Overlay />
           <StyledTwoLinesModal>
             {gameState === "restart" && <Text>RESTART GAME?</Text>}
@@ -98,7 +99,7 @@ const TwoLinesModal: React.FC<TwoLinesModalProps> = ({
               )}
             </ButtonsContainer>
           </StyledTwoLinesModal>
-        </div>
+        </Fragment>
       )}
     </>,
     document.getElementById("modal") as Element

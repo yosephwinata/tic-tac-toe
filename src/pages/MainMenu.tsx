@@ -4,7 +4,8 @@ import Button from "/src/ui/Button";
 import IconXSvg from "../svg/IconXSvg";
 import IconOSvg from "../svg/IconOSvg";
 import LogoSvg from "../svg/LogoSvg";
-import { PlayerSymbol } from "../utils/types/types";
+import DifficultiesModal from "../features/game/DifficultiesModal";
+import { HandleNewGameVsAI, PlayerSymbol } from "../utils/types/types";
 
 const StyledMainMenu = styled.div`
   width: 32.7rem;
@@ -92,14 +93,20 @@ const StartButtons = styled.div`
 
 interface MainMenuProps {
   onNewGameVsPlayerClick: (selectedSymbol: PlayerSymbol) => void;
+  onNewGameVsAIClick: HandleNewGameVsAI;
 }
 
-const MainMenu: React.FC<MainMenuProps> = ({ onNewGameVsPlayerClick }) => {
+const MainMenu: React.FC<MainMenuProps> = ({
+  onNewGameVsPlayerClick,
+  onNewGameVsAIClick,
+}) => {
   const themeContext = useContext(ThemeContext);
   const gray = themeContext?.colors?.gray;
   const darkNavy = themeContext?.colors?.darkNavy;
 
   const [selectedSymbols, setSelectedSymbols] = useState<PlayerSymbol>("X");
+  const [showDifficultiesModal, setShowDifficultiesModal] =
+    useState<boolean>(false);
 
   const handleSymbolClick = (newSymbol: PlayerSymbol): void => {
     setSelectedSymbols(newSymbol);
@@ -107,7 +114,12 @@ const MainMenu: React.FC<MainMenuProps> = ({ onNewGameVsPlayerClick }) => {
 
   return (
     <StyledMainMenu>
-      {/* <DifficultiesModal /> */}
+      <DifficultiesModal
+        isVisible={showDifficultiesModal}
+        selectedSymbol={selectedSymbols}
+        onNewGameVsAIClick={onNewGameVsAIClick}
+      />
+
       <StyledLogo />
       <PlayerPickContainer>
         <Instruction>PICK PLAYER 1’S MARK</Instruction>
@@ -139,14 +151,19 @@ const MainMenu: React.FC<MainMenuProps> = ({ onNewGameVsPlayerClick }) => {
       </PlayerPickContainer>
 
       <StartButtons>
-        <Button color="yellow" size="large" $fullWidth={true}>
+        <Button
+          color="yellow"
+          size="large"
+          $fullWidth={true}
+          onClick={() => setShowDifficultiesModal(true)}
+        >
           NEW GAME (VS AI)
         </Button>
         <Button
-          onClick={() => onNewGameVsPlayerClick(selectedSymbols)}
           color="cyan"
           size="large"
           $fullWidth={true}
+          onClick={() => onNewGameVsPlayerClick(selectedSymbols)}
         >
           NEW GAME (VS PLAYER)
         </Button>

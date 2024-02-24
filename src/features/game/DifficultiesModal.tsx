@@ -1,7 +1,9 @@
+import { Fragment } from "react";
 import { createPortal } from "react-dom";
 import styled from "styled-components";
 import Overlay from "/src/ui/Overlay";
 import Button from "/src/ui/Button";
+import { HandleNewGameVsAI, PlayerSymbol } from "/src/utils/types/types";
 
 const StyledDifficultiesModal = styled.div`
   position: fixed;
@@ -47,24 +49,50 @@ const Buttons = styled.div`
   }
 `;
 
-const DifficultiesModal: React.FC = () => {
+interface DifficultiesModalProps {
+  isVisible: boolean;
+  selectedSymbol: PlayerSymbol;
+  onNewGameVsAIClick: HandleNewGameVsAI;
+}
+
+const DifficultiesModal: React.FC<DifficultiesModalProps> = ({
+  isVisible,
+  selectedSymbol,
+  onNewGameVsAIClick,
+}) => {
   return createPortal(
     <>
-      <Overlay />
-      <StyledDifficultiesModal>
-        <Instructions>SELECT AI LEVEL</Instructions>
-        <Buttons>
-          <Button size="small" color="yellow">
-            DUMB
-          </Button>
-          <Button size="small" color="yellow">
-            AVERAGE
-          </Button>
-          <Button size="small" color="yellow">
-            DARK SOULS
-          </Button>
-        </Buttons>
-      </StyledDifficultiesModal>
+      {isVisible && (
+        <Fragment>
+          <Overlay />
+          <StyledDifficultiesModal>
+            <Instructions>SELECT AI LEVEL</Instructions>
+            <Buttons>
+              <Button
+                size="small"
+                color="yellow"
+                onClick={() => onNewGameVsAIClick(selectedSymbol, "dumb")}
+              >
+                DUMB
+              </Button>
+              <Button
+                size="small"
+                color="yellow"
+                onClick={() => onNewGameVsAIClick(selectedSymbol, "average")}
+              >
+                AVERAGE
+              </Button>
+              <Button
+                size="small"
+                color="yellow"
+                onClick={() => onNewGameVsAIClick(selectedSymbol, "genius")}
+              >
+                DARK SOULS
+              </Button>
+            </Buttons>
+          </StyledDifficultiesModal>
+        </Fragment>
+      )}
     </>,
     document.getElementById("modal") as Element
   );

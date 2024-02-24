@@ -5,7 +5,12 @@ import resetCSS from "./styles/resetCSS";
 import baseCSS from "./styles/baseCSS";
 import MainMenu from "./pages/MainMenu";
 import InGame from "./pages/InGame";
-import { CurrentPage } from "./utils/types/types";
+import {
+  AILevel,
+  CurrentPage,
+  GameMode,
+  HandleNewGameVsAI,
+} from "./utils/types/types";
 import { PlayerSymbol } from "./utils/types/types";
 
 const GlobalStyles = createGlobalStyle`
@@ -22,21 +27,39 @@ const StyledApp = styled.div`
 
 const App: React.FC = () => {
   const [player1Symbol, setPlayer1Symbol] = useState<PlayerSymbol>("X");
+  const [gameMode, setGameMode] = useState<GameMode>("singleplayer");
+  const [aiLevel, setAILevel] = useState<AILevel>("average");
   const [currentPage, setCurrentPage] = useState<CurrentPage>("mainMenu");
 
   const handleNewGameVsPlayer = (selectedSymbol: PlayerSymbol) => {
     setPlayer1Symbol(selectedSymbol);
+    setGameMode("multiplayer");
+    setCurrentPage("inGame");
+  };
+
+  const handleNewGameVsAI: HandleNewGameVsAI = (selectedSymbol, level) => {
+    setPlayer1Symbol(selectedSymbol);
+    setGameMode("singleplayer");
+    setAILevel(level);
     setCurrentPage("inGame");
   };
 
   let currentPageComponent;
   if (currentPage === "mainMenu") {
     currentPageComponent = (
-      <MainMenu onNewGameVsPlayerClick={handleNewGameVsPlayer} />
+      <MainMenu
+        onNewGameVsPlayerClick={handleNewGameVsPlayer}
+        onNewGameVsAIClick={handleNewGameVsAI}
+      />
     );
   } else if (currentPage === "inGame") {
     currentPageComponent = (
-      <InGame player1Symbol={player1Symbol} setCurrentPage={setCurrentPage} />
+      <InGame
+        player1Symbol={player1Symbol}
+        gameMode={gameMode}
+        aiLevel={aiLevel}
+        setCurrentPage={setCurrentPage}
+      />
     );
   }
 
