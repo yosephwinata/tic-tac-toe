@@ -8,6 +8,7 @@ import ThreeLinesModal from "../features/game/ThreeLinesModal";
 import TwoLinesModal from "../features/game/TwoLinesModal";
 import {
   Cell,
+  CurrentPage,
   InGameActionType,
   InGameStateType,
   PlayerSymbol,
@@ -159,7 +160,7 @@ const reducer = (
 
 interface InGameProps {
   player1Symbol: PlayerSymbol;
-  setCurrentPage: Dispatch<SetStateAction<string>>;
+  setCurrentPage: Dispatch<SetStateAction<CurrentPage>>;
 }
 
 const InGame: React.FC<InGameProps> = ({ player1Symbol, setCurrentPage }) => {
