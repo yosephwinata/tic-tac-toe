@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { createGlobalStyle } from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 import resetCSS from "./styles/resetCSS";
 import baseCSS from "./styles/baseCSS";
 import MainMenu from "./pages/MainMenu";
@@ -11,6 +11,13 @@ import { PlayerSymbol } from "./utils/types/types";
 const GlobalStyles = createGlobalStyle`
   ${resetCSS}
   ${baseCSS}
+`;
+
+const StyledApp = styled.div`
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const App: React.FC = () => {
@@ -34,7 +41,7 @@ const App: React.FC = () => {
   }
 
   return (
-    <>
+    <StyledApp>
       <Helmet>
         {/* Preconnect to Google Fonts */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -51,7 +58,7 @@ const App: React.FC = () => {
       </Helmet>
       <GlobalStyles />
       {currentPageComponent}
-    </>
+    </StyledApp>
   );
 };
 

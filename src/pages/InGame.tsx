@@ -23,15 +23,12 @@ import {
 
 const GameContainer = styled.div`
   width: 32.8rem;
-  margin: 2.4rem auto;
 
   @media (min-width: ${(props) => props.theme.breakpoints.tablet}) {
     width: 46rem;
-    margin: 20.1rem auto;
   }
 
   @media (min-width: ${(props) => props.theme.breakpoints.desktop}) {
-    margin: 13.9rem auto;
   }
 `;
 

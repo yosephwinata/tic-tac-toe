@@ -7,13 +7,6 @@ import LogoSvg from "../svg/LogoSvg";
 import { PlayerSymbol } from "../utils/types/types";
 
 const StyledMainMenu = styled.div`
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const MainMenuContainer = styled.div`
   width: 32.7rem;
   text-align: center;
 
@@ -110,51 +103,49 @@ const MainMenu: React.FC<MainMenuProps> = ({ onNewGameVsPlayerClick }) => {
   return (
     <StyledMainMenu>
       {/* <DifficultiesModal /> */}
-      <MainMenuContainer>
-        <StyledLogo />
-        <PlayerPickContainer>
-          <Instruction>PICK PLAYER 1’S MARK</Instruction>
-          <OptionsContainer>
-            <OptionButton
-              $isSelected={selectedSymbols === "X"}
-              onClick={() => handleSymbolClick("X")}
-              aria-checked={selectedSymbols === "X"}
-              role="radio"
-            >
-              <IconXSvg
-                width="3.2rem"
-                fillColor={selectedSymbols === "X" ? darkNavy : gray}
-              />
-            </OptionButton>
-            <OptionButton
-              $isSelected={selectedSymbols === "O"}
-              onClick={() => handleSymbolClick("O")}
-              aria-checked={selectedSymbols === "O"}
-              role="radio"
-            >
-              <IconOSvg
-                width="3.2rem"
-                fillColor={selectedSymbols === "O" ? darkNavy : gray}
-              />
-            </OptionButton>
-          </OptionsContainer>
-          <Hint>REMEMBER : X GOES FIRST</Hint>
-        </PlayerPickContainer>
-
-        <StartButtons>
-          <Button color="yellow" size="large" $fullWidth={true}>
-            NEW GAME (VS AI)
-          </Button>
-          <Button
-            onClick={() => onNewGameVsPlayerClick(selectedSymbols)}
-            color="cyan"
-            size="large"
-            $fullWidth={true}
+      <StyledLogo />
+      <PlayerPickContainer>
+        <Instruction>PICK PLAYER 1’S MARK</Instruction>
+        <OptionsContainer>
+          <OptionButton
+            $isSelected={selectedSymbols === "X"}
+            onClick={() => handleSymbolClick("X")}
+            aria-checked={selectedSymbols === "X"}
+            role="radio"
           >
-            NEW GAME (VS PLAYER)
-          </Button>
-        </StartButtons>
-      </MainMenuContainer>
+            <IconXSvg
+              width="3.2rem"
+              fillColor={selectedSymbols === "X" ? darkNavy : gray}
+            />
+          </OptionButton>
+          <OptionButton
+            $isSelected={selectedSymbols === "O"}
+            onClick={() => handleSymbolClick("O")}
+            aria-checked={selectedSymbols === "O"}
+            role="radio"
+          >
+            <IconOSvg
+              width="3.2rem"
+              fillColor={selectedSymbols === "O" ? darkNavy : gray}
+            />
+          </OptionButton>
+        </OptionsContainer>
+        <Hint>REMEMBER : X GOES FIRST</Hint>
+      </PlayerPickContainer>
+
+      <StartButtons>
+        <Button color="yellow" size="large" $fullWidth={true}>
+          NEW GAME (VS AI)
+        </Button>
+        <Button
+          onClick={() => onNewGameVsPlayerClick(selectedSymbols)}
+          color="cyan"
+          size="large"
+          $fullWidth={true}
+        >
+          NEW GAME (VS PLAYER)
+        </Button>
+      </StartButtons>
     </StyledMainMenu>
   );
 };
