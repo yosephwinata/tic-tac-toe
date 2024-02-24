@@ -1,3 +1,19 @@
+// Primitives
+export type GameMode = "singleplayer" | "multiplayer";
+export type AILevel = "dumb" | "average" | "genius";
+export type CurrentPage = "mainMenu" | "inGame";
+export type PlayerSymbol = "X" | "O";
+export type Cell = PlayerSymbol | null;
+export type GameState = "playing" | "wonOrLost" | "tied" | "restart";
+export type WinningCells = (number | null)[][];
+
+// Functions
+export type HandleNewGameVsAI = (
+  selectedSymbol: PlayerSymbol,
+  level: AILevel
+) => void;
+
+// Reducer
 export type InGameStateType = {
   gameState: GameState;
   currentPlayer: PlayerSymbol;
@@ -27,17 +43,3 @@ export type InGameActionType =
   | { type: "INCREMENT_TIES_SCORE" }
   | { type: "RESET_GAME" }
   | { type: "RESET_SCORES" };
-
-export type GameMode = "singleplayer" | "multiplayer";
-export type AILevel = "dumb" | "average" | "genius";
-export type CurrentPage = "mainMenu" | "inGame";
-export type PlayerSymbol = "X" | "O";
-export type Cell = PlayerSymbol | null;
-export type GameState = "playing" | "wonOrLost" | "tied" | "restart";
-export type WinningCells = (number | null)[][];
-
-// Functions
-export type HandleNewGameVsAI = (
-  selectedSymbol: PlayerSymbol,
-  level: AILevel
-) => void;
