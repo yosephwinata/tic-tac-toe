@@ -22,7 +22,7 @@ const slideInAnimation = keyframes`
   }
 `;
 
-const StyledThreeLinesModal = styled.div<{ show: boolean }>`
+const StyledThreeLinesModal = styled.div<{ $show: boolean }>`
   position: fixed;
   left: 0;
   top: 50%;
@@ -33,8 +33,8 @@ const StyledThreeLinesModal = styled.div<{ show: boolean }>`
   z-index: 40;
   text-align: center;
   padding-top: 4rem;
-  animation: ${({ show }) =>
-    show
+  animation: ${({ $show }) =>
+    $show
       ? css`
           ${slideInAnimation} 0.75s forwards
         `
@@ -123,7 +123,7 @@ const ThreeLinesModal: React.FC<ThreeLinesModalProps> = ({
       {show && (
         <Fragment>
           <Overlay />
-          <StyledThreeLinesModal show={show}>
+          <StyledThreeLinesModal $show={show}>
             <SmallText>{smallText}</SmallText>
             <TextContainer>
               {winningPlayer === "X" ? (
