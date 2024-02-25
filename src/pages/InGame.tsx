@@ -8,7 +8,6 @@ import ThreeLinesModal from "../features/game/ThreeLinesModal";
 import TwoLinesModal from "../features/game/TwoLinesModal";
 import {
   AILevel,
-  Cell,
   CurrentPage,
   GameMode,
   InGameActionType,
@@ -23,6 +22,7 @@ import {
   useReducer,
   useRef,
 } from "react";
+import { checkWinCondition, isTie } from "../features/game/gameLogic";
 
 const GameContainer = styled.div`
   width: 32.8rem;
@@ -206,40 +206,46 @@ const InGame: React.FC<InGameProps> = ({
   };
 
   useEffect(() => {
+    // Early exit if lastMove is not fully defined.
     if (
-      lastMove.rowIndex != undefined &&
-      lastMove.colIndex != undefined &&
-      lastMove.player != undefined
+      lastMove.rowIndex === undefined ||
+      lastMove.colIndex === undefined ||
+      lastMove.player === undefined
     ) {
-      const isTie = (): boolean => {
-        return moveCount.current === Math.pow(boardState.length, 2)
-          ? true
-          : false;
-      };
-
-      const tempWinningCells = checkWinCondition(
-        boardState,
-        lastMove.rowIndex,
-        lastMove.colIndex,
-        lastMove.player
-      );
-      // if tempWinninCells is null, then it was not a winning move; else it returns the winning cells positions.
-      if (tempWinningCells) {
-        dispatch({ type: "UPDATE_GAME_STATE", payload: "wonOrLost" });
-        dispatch({ type: "UPDATE_WINNING_CELLS", payload: tempWinningCells });
-        if (lastMove.player === player1Symbol) {
-          dispatch({ type: "INCREMENT_PLAYER1_SCORE" });
-        } else {
-          dispatch({ type: "INCREMENT_PLAYER2_SCORE" });
-        }
-      } else {
-        if (isTie()) {
-          dispatch({ type: "INCREMENT_TIES_SCORE" });
-          dispatch({ type: "UPDATE_GAME_STATE", payload: "tied" });
-        }
-        dispatch({ type: "SWITCH_TURN" });
-      }
+      return;
     }
+
+    // if checkWinCondition is null, then it was not a winning move; else it returns the winning cells positions.
+    const tempWinningCells = checkWinCondition(
+      boardState,
+      lastMove.rowIndex,
+      lastMove.colIndex,
+      lastMove.player
+    );
+
+    // Check for win
+    if (tempWinningCells) {
+      dispatch({ type: "UPDATE_GAME_STATE", payload: "wonOrLost" });
+      dispatch({ type: "UPDATE_WINNING_CELLS", payload: tempWinningCells });
+
+      // Increment winner's score
+      const incrementType =
+        lastMove.player === player1Symbol
+          ? "INCREMENT_PLAYER1_SCORE"
+          : "INCREMENT_PLAYER2_SCORE";
+      dispatch({ type: incrementType });
+      return;
+    }
+
+    // Check for tie
+    if (isTie(moveCount.current, boardState)) {
+      dispatch({ type: "UPDATE_GAME_STATE", payload: "tied" });
+      dispatch({ type: "INCREMENT_TIES_SCORE" });
+      return;
+    }
+
+    // If this turn doesn't end up in a win or tie, switch turn
+    dispatch({ type: "SWITCH_TURN" });
   }, [boardState, lastMove, player1Symbol]);
 
   const handleMove = (rowIndex: number, colIndex: number) => {
@@ -255,57 +261,6 @@ const InGame: React.FC<InGameProps> = ({
       currentPlayer,
     };
     dispatch({ type: "UPDATE_BOARD", payload });
-  };
-
-  const checkWinCondition = (
-    boardState: Cell[][],
-    rowIndex: number,
-    colIndex: number,
-    currentPlayer: PlayerSymbol
-  ): number[][] | null => {
-    // Make a copy of the boardState 2d array
-    const newBoardState = boardState.map((innerArray) => [...innerArray]);
-    newBoardState[rowIndex][colIndex] = currentPlayer;
-
-    const winningCombination: number[][] = [];
-
-    // check row
-    for (let i = 0; i < boardState.length; i++) {
-      winningCombination.push([rowIndex, i]);
-      if (newBoardState[rowIndex][i] !== currentPlayer) break;
-      if (i === boardState.length - 1) return winningCombination; // Wins
-    }
-    winningCombination.length = 0;
-
-    // check col
-    for (let i = 0; i < boardState.length; i++) {
-      winningCombination.push([i, colIndex]);
-      if (newBoardState[i][colIndex] !== currentPlayer) break;
-      if (i === boardState.length - 1) return winningCombination; //Wins
-    }
-    winningCombination.length = 0;
-
-    // Check diagonal
-    if (rowIndex === colIndex) {
-      for (let i = 0; i < boardState.length; i++) {
-        winningCombination.push([i, i]);
-        if (newBoardState[i][i] !== currentPlayer) break;
-        if (i === boardState.length - 1) return winningCombination; //Wins
-      }
-    }
-    winningCombination.length = 0;
-
-    // Check anti diagonal
-    if (rowIndex + colIndex === boardState.length - 1) {
-      for (let i = 0; i < boardState.length; i++) {
-        const currentCol = boardState.length - 1 - i;
-        winningCombination.push([i, currentCol]);
-        if (newBoardState[i][currentCol] !== currentPlayer) break;
-        if (i === boardState.length - 1) return winningCombination; //Wins
-      }
-    }
-
-    return null;
   };
 
   const handleQuitGame = (): void => {

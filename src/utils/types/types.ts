@@ -20,10 +20,12 @@ type LastMove = {
   player: PlayerSymbol | undefined;
 };
 
+export type BoardState = Cell[][];
+
 export type InGameStateType = {
   gameState: GameState;
   currentPlayer: PlayerSymbol;
-  boardState: Cell[][];
+  boardState: BoardState;
   lastMove: LastMove;
   winningCells: WinningCells;
   player1Score: number;
