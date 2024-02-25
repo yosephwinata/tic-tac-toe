@@ -19,6 +19,7 @@ import {
   Dispatch,
   SetStateAction,
   useContext,
+  useEffect,
   useReducer,
   useRef,
 } from "react";
@@ -88,6 +89,7 @@ const initialState: InGameStateType = {
   lastMove: {
     rowIndex: undefined,
     colIndex: undefined,
+    player: undefined,
   },
   winningCells: [
     [null, null],
@@ -119,6 +121,9 @@ const reducer = (
         action.payload.currentPlayer;
       return { ...state, boardState: newBoardState };
     }
+    case "UPDATE_LAST_MOVE": {
+      return { ...state, lastMove: action.payload };
+    }
     case "UPDATE_WINNING_CELLS": {
       return { ...state, winningCells: action.payload };
     }
@@ -141,6 +146,11 @@ const reducer = (
           [null, null, null],
           [null, null, null],
         ],
+        lastMove: {
+          rowIndex: undefined,
+          colIndex: undefined,
+          player: undefined,
+        },
         winningCells: [
           [null, null],
           [null, null],
@@ -195,35 +205,56 @@ const InGame: React.FC<InGameProps> = ({
     moveCount.current = 0;
   };
 
+  useEffect(() => {
+    if (
+      lastMove.rowIndex != undefined &&
+      lastMove.colIndex != undefined &&
+      lastMove.player != undefined
+    ) {
+      const isTie = (): boolean => {
+        return moveCount.current === Math.pow(boardState.length, 2)
+          ? true
+          : false;
+      };
+
+      const tempWinningCells = checkWinCondition(
+        boardState,
+        lastMove.rowIndex,
+        lastMove.colIndex,
+        lastMove.player
+      );
+      // if tempWinninCells is null, then it was not a winning move; else it returns the winning cells positions.
+      if (tempWinningCells) {
+        dispatch({ type: "UPDATE_GAME_STATE", payload: "wonOrLost" });
+        dispatch({ type: "UPDATE_WINNING_CELLS", payload: tempWinningCells });
+        if (lastMove.player === player1Symbol) {
+          dispatch({ type: "INCREMENT_PLAYER1_SCORE" });
+        } else {
+          dispatch({ type: "INCREMENT_PLAYER2_SCORE" });
+        }
+      } else {
+        if (isTie()) {
+          dispatch({ type: "INCREMENT_TIES_SCORE" });
+          dispatch({ type: "UPDATE_GAME_STATE", payload: "tied" });
+        }
+        dispatch({ type: "SWITCH_TURN" });
+      }
+    }
+  }, [boardState, lastMove, player1Symbol]);
+
   const handleMove = (rowIndex: number, colIndex: number) => {
     moveCount.current += 1;
+    dispatch({
+      type: "UPDATE_LAST_MOVE",
+      payload: { rowIndex, colIndex, player: currentPlayer },
+    });
+
     const payload = {
       rowIndex,
       colIndex,
       currentPlayer,
     };
-    const tempWinningCells = checkWinCondition(
-      boardState,
-      rowIndex,
-      colIndex,
-      currentPlayer
-    );
     dispatch({ type: "UPDATE_BOARD", payload });
-    if (tempWinningCells) {
-      dispatch({ type: "UPDATE_GAME_STATE", payload: "wonOrLost" });
-      dispatch({ type: "UPDATE_WINNING_CELLS", payload: tempWinningCells });
-      if (currentPlayer === player1Symbol) {
-        dispatch({ type: "INCREMENT_PLAYER1_SCORE" });
-      } else {
-        dispatch({ type: "INCREMENT_PLAYER2_SCORE" });
-      }
-    } else {
-      if (isTie()) {
-        dispatch({ type: "INCREMENT_TIES_SCORE" });
-        dispatch({ type: "UPDATE_GAME_STATE", payload: "tied" });
-      }
-      dispatch({ type: "SWITCH_TURN" });
-    }
   };
 
   const checkWinCondition = (
@@ -275,10 +306,6 @@ const InGame: React.FC<InGameProps> = ({
     }
 
     return null;
-  };
-
-  const isTie = (): boolean => {
-    return moveCount.current === Math.pow(boardState.length, 2) ? true : false;
   };
 
   const handleQuitGame = (): void => {

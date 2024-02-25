@@ -14,16 +14,17 @@ export type HandleNewGameVsAI = (
 ) => void;
 
 // Reducer
-type CellPosition = {
+type LastMove = {
   rowIndex: number | undefined;
   colIndex: number | undefined;
+  player: PlayerSymbol | undefined;
 };
 
 export type InGameStateType = {
   gameState: GameState;
   currentPlayer: PlayerSymbol;
   boardState: Cell[][];
-  lastMove: CellPosition;
+  lastMove: LastMove;
   winningCells: WinningCells;
   player1Score: number;
   player2Score: number;
@@ -43,6 +44,7 @@ export type InGameActionType =
     }
   | { type: "SWITCH_TURN" }
   | { type: "UPDATE_BOARD"; payload: UpdateCellPayload }
+  | { type: "UPDATE_LAST_MOVE"; payload: LastMove }
   | { type: "UPDATE_WINNING_CELLS"; payload: WinningCells }
   | { type: "INCREMENT_PLAYER1_SCORE" }
   | { type: "INCREMENT_PLAYER2_SCORE" }
