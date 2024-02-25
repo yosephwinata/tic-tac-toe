@@ -38,7 +38,7 @@ interface XOCellProps {
   colIndex: number;
   winningCells: WinningCells;
   currentPlayer: PlayerSymbol;
-  onCellUpdate: (rowIndex: number, colIndex: number) => void;
+  onMove: (rowIndex: number, colIndex: number) => void;
 }
 
 const XOCell: React.FC<XOCellProps> = ({
@@ -47,7 +47,7 @@ const XOCell: React.FC<XOCellProps> = ({
   colIndex,
   winningCells,
   currentPlayer,
-  onCellUpdate,
+  onMove,
 }) => {
   const { isTablet, isDesktop } = useViewportSize();
   const [isHovered, setIsHovered] = useState(false);
@@ -77,7 +77,7 @@ const XOCell: React.FC<XOCellProps> = ({
 
   const handleCellClick = () => {
     setIsHovered(false);
-    onCellUpdate(rowIndex, colIndex);
+    onMove(rowIndex, colIndex);
   };
 
   return (

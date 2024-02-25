@@ -85,6 +85,10 @@ const initialState: InGameStateType = {
     [null, null, null],
     [null, null, null],
   ],
+  lastMove: {
+    rowIndex: undefined,
+    colIndex: undefined,
+  },
   winningCells: [
     [null, null],
     [null, null],
@@ -175,6 +179,7 @@ const InGame: React.FC<InGameProps> = ({
       gameState,
       currentPlayer,
       boardState,
+      lastMove,
       winningCells,
       player1Score,
       player2Score,
@@ -190,7 +195,7 @@ const InGame: React.FC<InGameProps> = ({
     moveCount.current = 0;
   };
 
-  const handleCellUpdate = (rowIndex: number, colIndex: number) => {
+  const handleMove = (rowIndex: number, colIndex: number) => {
     moveCount.current += 1;
     const payload = {
       rowIndex,
@@ -213,7 +218,7 @@ const InGame: React.FC<InGameProps> = ({
         dispatch({ type: "INCREMENT_PLAYER2_SCORE" });
       }
     } else {
-      if (checkTie()) {
+      if (isTie()) {
         dispatch({ type: "INCREMENT_TIES_SCORE" });
         dispatch({ type: "UPDATE_GAME_STATE", payload: "tied" });
       }
@@ -272,11 +277,8 @@ const InGame: React.FC<InGameProps> = ({
     return null;
   };
 
-  const checkTie = (): boolean => {
-    if (moveCount.current === Math.pow(boardState.length, 2)) {
-      return true;
-    }
-    return false;
+  const isTie = (): boolean => {
+    return moveCount.current === Math.pow(boardState.length, 2) ? true : false;
   };
 
   const handleQuitGame = (): void => {
@@ -317,7 +319,7 @@ const InGame: React.FC<InGameProps> = ({
         boardState={boardState}
         winningCells={winningCells}
         currentPlayer={currentPlayer}
-        onCellUpdate={handleCellUpdate}
+        onMove={handleMove}
       />
       <ScoreCards>
         <ScoreCard

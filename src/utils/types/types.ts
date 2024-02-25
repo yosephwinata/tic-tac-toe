@@ -14,10 +14,16 @@ export type HandleNewGameVsAI = (
 ) => void;
 
 // Reducer
+type CellPosition = {
+  rowIndex: number | undefined;
+  colIndex: number | undefined;
+};
+
 export type InGameStateType = {
   gameState: GameState;
   currentPlayer: PlayerSymbol;
   boardState: Cell[][];
+  lastMove: CellPosition;
   winningCells: WinningCells;
   player1Score: number;
   player2Score: number;
