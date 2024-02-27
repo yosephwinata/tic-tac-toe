@@ -115,7 +115,6 @@ const reducer = (
       return { ...state, currentPlayer: nextPlayer };
     }
     case "UPDATE_BOARD": {
-      console.log("action.payload", action.payload);
       const newBoardState = [...state.boardState.map((row) => [...row])];
       newBoardState[action.payload.rowIndex][action.payload.colIndex] =
         action.payload.currentPlayer;
@@ -158,13 +157,13 @@ const reducer = (
         tiesScore: 0,
       };
     }
-    case "MAKE_DUMB_MOVES": {
-      // Create a deep copy of the board
-      const newBoard = [...state.boardState.map((row) => [...row])];
-      const { rowIndex, colIndex } = action.payload;
-      newBoard[rowIndex][colIndex] = state.currentPlayer;
-      return { ...state, boardState: newBoard };
-    }
+    // case "MAKE_DUMB_MOVES": {
+    //   // Create a deep copy of the board
+    //   const newBoard = [...state.boardState.map((row) => [...row])];
+    //   const { rowIndex, colIndex } = action.payload;
+    //   newBoard[rowIndex][colIndex] = state.currentPlayer;
+    //   return { ...state, boardState: newBoard };
+    // }
     default:
       throw new Error("Action unknown");
   }
