@@ -14,30 +14,26 @@ export type HandleNewGameVsAI = (
 ) => void;
 
 // Reducer
-type LastMove = {
-  rowIndex: number | undefined;
-  colIndex: number | undefined;
-  player: PlayerSymbol | undefined;
-};
-
 export type BoardState = Cell[][];
 
 export type InGameStateType = {
   gameState: GameState;
   currentPlayer: PlayerSymbol;
   boardState: BoardState;
-  lastMove: LastMove;
   winningCells: WinningCells;
   player1Score: number;
   player2Score: number;
   tiesScore: number;
 };
 
-interface UpdateCellPayload {
+export type CellLocation = {
   rowIndex: number;
   colIndex: number;
+};
+
+type UpdateCellPayload = CellLocation & {
   currentPlayer: PlayerSymbol;
-}
+};
 
 export type InGameActionType =
   | {
@@ -46,10 +42,10 @@ export type InGameActionType =
     }
   | { type: "SWITCH_TURN" }
   | { type: "UPDATE_BOARD"; payload: UpdateCellPayload }
-  | { type: "UPDATE_LAST_MOVE"; payload: LastMove }
   | { type: "UPDATE_WINNING_CELLS"; payload: WinningCells }
   | { type: "INCREMENT_PLAYER1_SCORE" }
   | { type: "INCREMENT_PLAYER2_SCORE" }
   | { type: "INCREMENT_TIES_SCORE" }
   | { type: "RESET_GAME" }
-  | { type: "RESET_SCORES" };
+  | { type: "RESET_SCORES" }
+  | { type: "MAKE_DUMB_MOVES"; payload: CellLocation };

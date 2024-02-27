@@ -8,6 +8,7 @@ import ThreeLinesModal from "../features/game/ThreeLinesModal";
 import TwoLinesModal from "../features/game/TwoLinesModal";
 import {
   AILevel,
+  BoardState,
   CurrentPage,
   GameMode,
   InGameActionType,
@@ -18,11 +19,14 @@ import {
   Dispatch,
   SetStateAction,
   useContext,
-  useEffect,
   useReducer,
   useRef,
 } from "react";
-import { checkWinCondition, isTie } from "../features/game/gameLogic";
+import {
+  checkWinCondition,
+  getRandomEmptyCell,
+  isTie,
+} from "../features/game/gameLogic";
 
 const GameContainer = styled.div`
   width: 32.8rem;
@@ -86,11 +90,6 @@ const initialState: InGameStateType = {
     [null, null, null],
     [null, null, null],
   ],
-  lastMove: {
-    rowIndex: undefined,
-    colIndex: undefined,
-    player: undefined,
-  },
   winningCells: [
     [null, null],
     [null, null],
@@ -116,13 +115,11 @@ const reducer = (
       return { ...state, currentPlayer: nextPlayer };
     }
     case "UPDATE_BOARD": {
-      const newBoardState = state.boardState.map((row) => [...row]);
+      console.log("action.payload", action.payload);
+      const newBoardState = [...state.boardState.map((row) => [...row])];
       newBoardState[action.payload.rowIndex][action.payload.colIndex] =
         action.payload.currentPlayer;
       return { ...state, boardState: newBoardState };
-    }
-    case "UPDATE_LAST_MOVE": {
-      return { ...state, lastMove: action.payload };
     }
     case "UPDATE_WINNING_CELLS": {
       return { ...state, winningCells: action.payload };
@@ -146,11 +143,6 @@ const reducer = (
           [null, null, null],
           [null, null, null],
         ],
-        lastMove: {
-          rowIndex: undefined,
-          colIndex: undefined,
-          player: undefined,
-        },
         winningCells: [
           [null, null],
           [null, null],
@@ -165,6 +157,13 @@ const reducer = (
         player2Score: 0,
         tiesScore: 0,
       };
+    }
+    case "MAKE_DUMB_MOVES": {
+      // Create a deep copy of the board
+      const newBoard = [...state.boardState.map((row) => [...row])];
+      const { rowIndex, colIndex } = action.payload;
+      newBoard[rowIndex][colIndex] = state.currentPlayer;
+      return { ...state, boardState: newBoard };
     }
     default:
       throw new Error("Action unknown");
@@ -189,7 +188,6 @@ const InGame: React.FC<InGameProps> = ({
       gameState,
       currentPlayer,
       boardState,
-      lastMove,
       winningCells,
       player1Score,
       player2Score,
@@ -205,22 +203,47 @@ const InGame: React.FC<InGameProps> = ({
     moveCount.current = 0;
   };
 
-  useEffect(() => {
+  // useEffect(() => {
+  //   if (gameMode === "singleplayer" && currentPlayer !== player1Symbol) {
+  //     if (aiLevel === "dumb") {
+  //       const selectedCell = getRandomEmptyCell(boardState);
+  //       if (selectedCell !== null) {
+  //         dispatch({ type: "MAKE_DUMB_MOVES", payload: selectedCell });
+  //         //trial
+  //         const { rowIndex, colIndex } = selectedCell;
+  //         moveCount.current += 1;
+  //         dispatch({
+  //           type: "UPDATE_LAST_MOVE",
+  //           payload: { rowIndex, colIndex, player: currentPlayer },
+  //         });
+  //       }
+  //     }
+
+  //     dispatch({ type: "SWITCH_TURN" });
+  //   }
+  // }, [currentPlayer, aiLevel, gameMode, boardState, player1Symbol]);
+
+  const checkWinOrTie = (
+    newRowIndex: number,
+    newColIndex: number,
+    oldBoardState: BoardState,
+    player: PlayerSymbol
+  ): boolean => {
     // Early exit if lastMove is not fully defined.
     if (
-      lastMove.rowIndex === undefined ||
-      lastMove.colIndex === undefined ||
-      lastMove.player === undefined
+      newRowIndex === undefined ||
+      newColIndex === undefined ||
+      player === undefined
     ) {
-      return;
+      return false;
     }
 
     // if checkWinCondition is null, then it was not a winning move; else it returns the winning cells positions.
     const tempWinningCells = checkWinCondition(
-      boardState,
-      lastMove.rowIndex,
-      lastMove.colIndex,
-      lastMove.player
+      oldBoardState,
+      newRowIndex,
+      newColIndex,
+      player
     );
 
     // Check for win
@@ -230,30 +253,32 @@ const InGame: React.FC<InGameProps> = ({
 
       // Increment winner's score
       const incrementType =
-        lastMove.player === player1Symbol
+        player === player1Symbol
           ? "INCREMENT_PLAYER1_SCORE"
           : "INCREMENT_PLAYER2_SCORE";
       dispatch({ type: incrementType });
-      return;
+      return true;
     }
 
     // Check for tie
-    if (isTie(moveCount.current, boardState)) {
+    if (isTie(moveCount.current, oldBoardState)) {
       dispatch({ type: "UPDATE_GAME_STATE", payload: "tied" });
       dispatch({ type: "INCREMENT_TIES_SCORE" });
-      return;
+      return true;
     }
 
-    // If this turn doesn't end up in a win or tie, switch turn
-    dispatch({ type: "SWITCH_TURN" });
-  }, [boardState, lastMove, player1Symbol]);
+    // No win or tie
+    return false;
+  };
 
   const handleMove = (rowIndex: number, colIndex: number) => {
     moveCount.current += 1;
-    dispatch({
-      type: "UPDATE_LAST_MOVE",
-      payload: { rowIndex, colIndex, player: currentPlayer },
-    });
+    const isWinOrTie = checkWinOrTie(
+      rowIndex,
+      colIndex,
+      boardState,
+      currentPlayer
+    );
 
     const payload = {
       rowIndex,
@@ -261,6 +286,10 @@ const InGame: React.FC<InGameProps> = ({
       currentPlayer,
     };
     dispatch({ type: "UPDATE_BOARD", payload });
+
+    if (!isWinOrTie) {
+      dispatch({ type: "SWITCH_TURN" });
+    }
   };
 
   const handleQuitGame = (): void => {

@@ -1,4 +1,4 @@
-import { BoardState, PlayerSymbol } from "/src/utils/types/types";
+import { BoardState, CellLocation, PlayerSymbol } from "/src/utils/types/types";
 
 export const isTie = (moveCount: number, boardState: BoardState): boolean => {
   return moveCount === Math.pow(boardState.length, 2) ? true : false;
@@ -52,5 +52,25 @@ export const checkWinCondition = (
     }
   }
 
+  return null;
+};
+
+export const getRandomEmptyCell = (board: BoardState): CellLocation | null => {
+  // Find all null cells
+  const availableMoves: { rowIndex: number; colIndex: number }[] = [];
+  board.forEach((row, rowIndex) => {
+    row.forEach((cell, colIndex) => {
+      if (cell === null) {
+        availableMoves.push({ rowIndex, colIndex });
+      }
+    });
+  });
+
+  // Select a random null cell if there are any available
+  if (availableMoves.length > 0) {
+    const randomMoveIndex = Math.floor(Math.random() * availableMoves.length);
+    const move = availableMoves[randomMoveIndex];
+    return move;
+  }
   return null;
 };
