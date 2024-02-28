@@ -2,7 +2,7 @@
 
 ## Links
 
-Live site URL: ?
+Live site URL: [https://tic-tac-payk6wedi-yosephwinata.vercel.app/](https://tic-tac-payk6wedi-yosephwinata.vercel.app/)
 
 ## Tech stack
 
