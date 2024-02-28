@@ -14,7 +14,7 @@ export const findGeniusMove = (
         // Make the move
         board[i][j] = aiPlayer;
         // Compute evaluation function for this move
-        let moveVal = minimax(board, 0, false, -Infinity, Infinity, aiPlayer);
+        const moveVal = minimax(board, 0, false, -Infinity, Infinity, aiPlayer);
         // Undo the move
         board[i][j] = null;
 
@@ -145,7 +145,7 @@ const evaluate = (board: BoardState, aiPlayer: PlayerSymbol): number => {
     ],
   ];
 
-  for (let condition of winningConditions) {
+  for (const condition of winningConditions) {
     const [a, b, c] = condition;
     if (
       board[a.rowIndex][a.colIndex] === aiPlayer &&

@@ -56,7 +56,6 @@ const TwoLinesModal: React.FC<TwoLinesModalProps> = ({
   dispatch,
   onNextRoundClick,
   onQuitClick,
-  resetMoveCount,
   onResetClick,
 }) => {
   return createPortal(
