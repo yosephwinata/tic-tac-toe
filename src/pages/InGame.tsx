@@ -296,7 +296,6 @@ const InGame: React.FC<InGameProps> = ({
     } else if (aiLevel === "average") {
       move = findAverageMove(boardState, aiSymbol);
     } else if (aiLevel === "genius") {
-      console.log("Make genius move");
       move = findGeniusMove(boardState, aiSymbol);
     }
 
@@ -329,12 +328,16 @@ const InGame: React.FC<InGameProps> = ({
     setCurrentPage("mainMenu");
   };
 
-  const handleNextRoundClick = () => {
+  const handleResetGame = () => {
     dispatch({ type: "RESET_GAME" });
     resetMoveCount();
     if (gameMode === "singleplayer" && player1Symbol == "O") {
       executeAITurn(emptyBoardState, "X", aiLevel);
     }
+  };
+
+  const handleNextRoundClick = () => {
+    handleResetGame();
   };
 
   const handleRestartClick = () => {
@@ -394,6 +397,7 @@ const InGame: React.FC<InGameProps> = ({
         onQuitClick={handleQuitGame}
         onNextRoundClick={handleNextRoundClick}
         resetMoveCount={resetMoveCount}
+        onResetClick={handleResetGame}
       />
     </GameContainer>
   );

@@ -48,6 +48,7 @@ interface TwoLinesModalProps {
   onNextRoundClick: () => void;
   onQuitClick: () => void;
   resetMoveCount: () => void;
+  onResetClick: () => void;
 }
 
 const TwoLinesModal: React.FC<TwoLinesModalProps> = ({
@@ -56,6 +57,7 @@ const TwoLinesModal: React.FC<TwoLinesModalProps> = ({
   onNextRoundClick,
   onQuitClick,
   resetMoveCount,
+  onResetClick,
 }) => {
   return createPortal(
     <>
@@ -82,14 +84,7 @@ const TwoLinesModal: React.FC<TwoLinesModalProps> = ({
                 </Button>
               )}
               {gameState === "restart" ? (
-                <Button
-                  size="small"
-                  color="yellow"
-                  onClick={() => {
-                    dispatch({ type: "RESET_GAME" });
-                    resetMoveCount();
-                  }}
-                >
+                <Button size="small" color="yellow" onClick={onResetClick}>
                   YES, RESTART
                 </Button>
               ) : (
