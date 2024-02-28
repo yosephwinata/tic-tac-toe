@@ -6,6 +6,7 @@ import IconOSvg from "/src/svg/IconOSvg";
 import Button from "/src/ui/Button";
 import useViewportSize from "/src/hooks/useViewportSize";
 import {
+  GameMode,
   GameState,
   InGameActionType,
   PlayerSymbol,
@@ -88,6 +89,7 @@ const ButtonsContainer = styled.div`
 `;
 
 interface ThreeLinesModalProps {
+  gameMode: GameMode;
   gameState: GameState;
   winningPlayer: PlayerSymbol;
   player1: PlayerSymbol;
@@ -97,6 +99,7 @@ interface ThreeLinesModalProps {
 }
 
 const ThreeLinesModal: React.FC<ThreeLinesModalProps> = ({
+  gameMode,
   gameState,
   winningPlayer,
   player1,
@@ -113,8 +116,13 @@ const ThreeLinesModal: React.FC<ThreeLinesModalProps> = ({
   if (isDesktop) iconWidth = "6.4rem";
 
   let smallText: string;
-  if (winningPlayer === player1) smallText = "PLAYER 1 WINS!";
-  else smallText = "PLAYER 2 WINS!";
+  if (gameMode === "singleplayer") {
+    if (winningPlayer === player1) smallText = "YOU WON!";
+    else smallText = "OH NO, YOU LOST…";
+  } else {
+    if (winningPlayer === player1) smallText = "PLAYER 1 WINS!";
+    else smallText = "PLAYER 2 WINS!";
+  }
 
   const show = gameState === "wonOrLost";
 

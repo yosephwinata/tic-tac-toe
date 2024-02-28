@@ -19,13 +19,14 @@ import {
   Dispatch,
   SetStateAction,
   useContext,
+  useEffect,
   useReducer,
   useRef,
 } from "react";
 import {
   checkWinCondition,
-  getRandomEmptyCell,
   isTie,
+  makeDumbMove,
 } from "../features/game/gameLogic";
 
 const GameContainer = styled.div`
@@ -82,14 +83,16 @@ const ScoreCards = styled.div`
   justify-content: space-between;
 `;
 
+const emptyBoardState = [
+  [null, null, null],
+  [null, null, null],
+  [null, null, null],
+];
+
 const initialState: InGameStateType = {
   gameState: "playing",
   currentPlayer: "X",
-  boardState: [
-    [null, null, null],
-    [null, null, null],
-    [null, null, null],
-  ],
+  boardState: emptyBoardState,
   winningCells: [
     [null, null],
     [null, null],
@@ -137,11 +140,7 @@ const reducer = (
         ...state,
         gameState: "playing",
         currentPlayer: "X",
-        boardState: [
-          [null, null, null],
-          [null, null, null],
-          [null, null, null],
-        ],
+        boardState: emptyBoardState,
         winningCells: [
           [null, null],
           [null, null],
@@ -157,13 +156,6 @@ const reducer = (
         tiesScore: 0,
       };
     }
-    // case "MAKE_DUMB_MOVES": {
-    //   // Create a deep copy of the board
-    //   const newBoard = [...state.boardState.map((row) => [...row])];
-    //   const { rowIndex, colIndex } = action.payload;
-    //   newBoard[rowIndex][colIndex] = state.currentPlayer;
-    //   return { ...state, boardState: newBoard };
-    // }
     default:
       throw new Error("Action unknown");
   }
@@ -195,32 +187,25 @@ const InGame: React.FC<InGameProps> = ({
     dispatch,
   ] = useReducer(reducer, initialState);
   const moveCount = useRef(0);
+  const isFirstRender = useRef(true);
   const themeContext = useContext(ThemeContext);
   const colors = themeContext?.colors;
+
+  useEffect(() => {
+    if (
+      isFirstRender.current &&
+      gameMode === "singleplayer" &&
+      player1Symbol == "O"
+    ) {
+      executeAITurn(emptyBoardState, "X", aiLevel);
+    }
+    isFirstRender.current = false;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const resetMoveCount = () => {
     moveCount.current = 0;
   };
-
-  // useEffect(() => {
-  //   if (gameMode === "singleplayer" && currentPlayer !== player1Symbol) {
-  //     if (aiLevel === "dumb") {
-  //       const selectedCell = getRandomEmptyCell(boardState);
-  //       if (selectedCell !== null) {
-  //         dispatch({ type: "MAKE_DUMB_MOVES", payload: selectedCell });
-  //         //trial
-  //         const { rowIndex, colIndex } = selectedCell;
-  //         moveCount.current += 1;
-  //         dispatch({
-  //           type: "UPDATE_LAST_MOVE",
-  //           payload: { rowIndex, colIndex, player: currentPlayer },
-  //         });
-  //       }
-  //     }
-
-  //     dispatch({ type: "SWITCH_TURN" });
-  //   }
-  // }, [currentPlayer, aiLevel, gameMode, boardState, player1Symbol]);
 
   const checkWinOrTie = (
     newRowIndex: number,
@@ -279,6 +264,11 @@ const InGame: React.FC<InGameProps> = ({
       currentPlayer
     );
 
+    // Prepare for AI turn
+    const newBoardForAI = [...boardState.map((row) => [...row])];
+    newBoardForAI[rowIndex][colIndex] = currentPlayer;
+    const aiSymbol = currentPlayer === "X" ? "O" : "X";
+
     const payload = {
       rowIndex,
       colIndex,
@@ -286,9 +276,50 @@ const InGame: React.FC<InGameProps> = ({
     };
     dispatch({ type: "UPDATE_BOARD", payload });
 
-    if (!isWinOrTie) {
-      dispatch({ type: "SWITCH_TURN" });
+    if (isWinOrTie) return;
+
+    dispatch({ type: "SWITCH_TURN" });
+
+    // AI turn
+    if (gameMode === "singleplayer") {
+      executeAITurn(newBoardForAI, aiSymbol, aiLevel);
     }
+  };
+
+  const executeAITurn = (
+    boardState: BoardState,
+    aiSymbol: PlayerSymbol,
+    aiLevel: AILevel
+  ) => {
+    let move;
+    if (aiLevel === "dumb") {
+      move = makeDumbMove(boardState);
+    } else if (aiLevel === "average") {
+      console.log("Make average move");
+    } else if (aiLevel === "genius") {
+      console.log("Make genius move");
+    }
+
+    moveCount.current += 1;
+
+    if (!move) return;
+    const isWinOrTie = checkWinOrTie(
+      move.rowIndex,
+      move.colIndex,
+      boardState,
+      aiSymbol
+    );
+
+    const payload = {
+      rowIndex: move.rowIndex,
+      colIndex: move.colIndex,
+      currentPlayer: aiSymbol,
+    };
+    dispatch({ type: "UPDATE_BOARD", payload });
+
+    if (isWinOrTie) return;
+
+    dispatch({ type: "SWITCH_TURN" });
   };
 
   const handleQuitGame = (): void => {
@@ -301,6 +332,9 @@ const InGame: React.FC<InGameProps> = ({
   const handleNextRoundClick = () => {
     dispatch({ type: "RESET_GAME" });
     resetMoveCount();
+    if (gameMode === "singleplayer" && player1Symbol == "O") {
+      executeAITurn(emptyBoardState, "X", aiLevel);
+    }
   };
 
   const handleRestartClick = () => {
@@ -309,11 +343,11 @@ const InGame: React.FC<InGameProps> = ({
 
   let xPlayerCardText: string, oPlayerCardText: string;
   if (player1Symbol === "X") {
-    xPlayerCardText = "X (P1)";
-    oPlayerCardText = "O (P2)";
+    xPlayerCardText = gameMode === "multiplayer" ? "X (P1)" : "X (YOU)";
+    oPlayerCardText = gameMode === "multiplayer" ? "O (P2)" : "O (CPU)";
   } else {
-    xPlayerCardText = "X (P2)";
-    oPlayerCardText = "O (P1)";
+    xPlayerCardText = gameMode === "multiplayer" ? "X (P2)" : "X (CPU)";
+    oPlayerCardText = gameMode === "multiplayer" ? "O (P1)" : "O (YOU)";
   }
 
   return (
@@ -346,6 +380,7 @@ const InGame: React.FC<InGameProps> = ({
       </ScoreCards>
 
       <ThreeLinesModal
+        gameMode={gameMode}
         gameState={gameState}
         winningPlayer={currentPlayer}
         player1={player1Symbol}

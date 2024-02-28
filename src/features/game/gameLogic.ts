@@ -55,7 +55,7 @@ export const checkWinCondition = (
   return null;
 };
 
-export const getRandomEmptyCell = (board: BoardState): CellLocation | null => {
+export const makeDumbMove = (board: BoardState): CellLocation | null => {
   // Find all null cells
   const availableMoves: { rowIndex: number; colIndex: number }[] = [];
   board.forEach((row, rowIndex) => {
