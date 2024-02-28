@@ -26,6 +26,7 @@ import {
 import { checkWinCondition, isTie } from "../features/game/gameLogic/gameLogic";
 import { findDumbMove } from "../features/game/gameLogic/dumbAILogic";
 import { findAverageMove } from "../features/game/gameLogic/averageAILogic";
+import { findGeniusMove } from "../features/game/gameLogic/geniusAILogic";
 
 const GameContainer = styled.div`
   width: 32.8rem;
@@ -296,6 +297,7 @@ const InGame: React.FC<InGameProps> = ({
       move = findAverageMove(boardState, aiSymbol);
     } else if (aiLevel === "genius") {
       console.log("Make genius move");
+      move = findGeniusMove(boardState, aiSymbol);
     }
 
     moveCount.current += 1;
