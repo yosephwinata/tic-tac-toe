@@ -23,12 +23,9 @@ import {
   useReducer,
   useRef,
 } from "react";
-import {
-  checkWinCondition,
-  isTie,
-  findAverageMove,
-  findDumbMove,
-} from "../features/game/gameLogic";
+import { checkWinCondition, isTie } from "../features/game/gameLogic/gameLogic";
+import { findDumbMove } from "../features/game/gameLogic/dumbAILogic";
+import { findAverageMove } from "../features/game/gameLogic/averageAILogic";
 
 const GameContainer = styled.div`
   width: 32.8rem;
