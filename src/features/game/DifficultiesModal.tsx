@@ -73,7 +73,7 @@ const DifficultiesModal: React.FC<DifficultiesModalProps> = ({
                 color="yellow"
                 onClick={() => onNewGameVsAIClick(selectedSymbol, "dumb")}
               >
-                DUMB
+                IDIOT
               </Button>
               <Button
                 size="small"
@@ -87,7 +87,7 @@ const DifficultiesModal: React.FC<DifficultiesModalProps> = ({
                 color="yellow"
                 onClick={() => onNewGameVsAIClick(selectedSymbol, "genius")}
               >
-                DARK SOULS
+                EINSTEIN
               </Button>
             </Buttons>
           </StyledDifficultiesModal>
