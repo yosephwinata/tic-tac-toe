@@ -12,6 +12,7 @@ import {
   HandleNewGameVsAI,
 } from "./utils/types/types";
 import { PlayerSymbol } from "./utils/types/types";
+import Credits from "./ui/Credits";
 
 const GlobalStyles = createGlobalStyle`
   ${resetCSS}
@@ -23,6 +24,7 @@ const StyledApp = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 `;
 
 const App: React.FC = () => {
@@ -81,6 +83,7 @@ const App: React.FC = () => {
       </Helmet>
       <GlobalStyles />
       {currentPageComponent}
+      <Credits />
     </StyledApp>
   );
 };
