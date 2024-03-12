@@ -47,5 +47,4 @@ export type InGameActionType =
   | { type: "INCREMENT_PLAYER2_SCORE" }
   | { type: "INCREMENT_TIES_SCORE" }
   | { type: "RESET_GAME" }
-  | { type: "RESET_SCORES" }
-  | { type: "MAKE_DUMB_MOVES"; payload: CellLocation };
+  | { type: "RESET_SCORES" };

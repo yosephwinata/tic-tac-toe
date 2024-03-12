@@ -155,8 +155,12 @@ const reducer = (
         tiesScore: 0,
       };
     }
-    default:
-      throw new Error("Action unknown");
+    default: {
+      // We should never make it here, if we handled all cases correctly
+      // If we make it here, typescript will complaint
+      const _exhaustiveCheck: never = action;
+      return _exhaustiveCheck;
+    }
   }
 };
 
